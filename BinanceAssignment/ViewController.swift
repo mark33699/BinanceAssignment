@@ -10,11 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    let socketManager = WebSocketManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
-
-
 }
 
