@@ -24,11 +24,13 @@ class WebSocketManager: BABassClass, WebSocketDelegate
         socket.connect()
     }
     
-    func websocketDidConnect(socket: WebSocketClient) {
+    func websocketDidConnect(socket: WebSocketClient)
+    {
         print("🎉websocket is connected🎉")
     }
     
-    func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
+    func websocketDidDisconnect(socket: WebSocketClient, error: Error?)
+    {
         if let e = error as? WSError {
             print("websocket is disconnected: \(e.message)")
         } else if let e = error {
@@ -38,11 +40,13 @@ class WebSocketManager: BABassClass, WebSocketDelegate
         }
     }
     
-    func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
+    func websocketDidReceiveMessage(socket: WebSocketClient, text: String)
+    {
         print("Received text: \(text)")
     }
     
-    func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
+    func websocketDidReceiveData(socket: WebSocketClient, data: Data)
+    {
         print("Received data: \(data.count)")
     }
 }

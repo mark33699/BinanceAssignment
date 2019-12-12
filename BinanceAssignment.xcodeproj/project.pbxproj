@@ -8,11 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		0D6F18AB239FF58500DBA30E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6F18AA239FF58500DBA30E /* AppDelegate.swift */; };
-		0D6F18AD239FF58500DBA30E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6F18AC239FF58500DBA30E /* ViewController.swift */; };
+		0D6F18AD239FF58500DBA30E /* MarketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6F18AC239FF58500DBA30E /* MarketViewController.swift */; };
 		0D6F18B0239FF58500DBA30E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D6F18AE239FF58500DBA30E /* Main.storyboard */; };
 		0D6F18B2239FF58800DBA30E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D6F18B1239FF58800DBA30E /* Assets.xcassets */; };
 		0D6F18B5239FF58800DBA30E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D6F18B3239FF58800DBA30E /* LaunchScreen.storyboard */; };
 		C2074C8F15D0EA51E660FC42 /* Pods_BinanceAssignment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8750B18BD463272361A7C72F /* Pods_BinanceAssignment.framework */; };
+		DA18016723A23E1000A23F47 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA18016623A23E1000A23F47 /* ApiManager.swift */; };
+		DA18016923A241D400A23F47 /* OrderBookSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA18016823A241D400A23F47 /* OrderBookSnapshot.swift */; };
+		DA18016B23A2423300A23F47 /* MarketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA18016A23A2423300A23F47 /* MarketViewModel.swift */; };
 		DA19EC5F23A09BF500C51635 /* BinanceAssignmentBaseClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA19EC5E23A09BF500C51635 /* BinanceAssignmentBaseClass.swift */; };
 		DA19EC6123A09CFA00C51635 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA19EC6023A09CFA00C51635 /* WebSocketManager.swift */; };
 /* End PBXBuildFile section */
@@ -21,13 +24,16 @@
 		02A0ACCA166E412B09C05E9B /* Pods-BinanceAssignment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BinanceAssignment.release.xcconfig"; path = "Target Support Files/Pods-BinanceAssignment/Pods-BinanceAssignment.release.xcconfig"; sourceTree = "<group>"; };
 		0D6F18A7239FF58500DBA30E /* BinanceAssignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BinanceAssignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D6F18AA239FF58500DBA30E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0D6F18AC239FF58500DBA30E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		0D6F18AC239FF58500DBA30E /* MarketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketViewController.swift; sourceTree = "<group>"; };
 		0D6F18AF239FF58500DBA30E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0D6F18B1239FF58800DBA30E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0D6F18B4239FF58800DBA30E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0D6F18B6239FF58800DBA30E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		845918F65961341F9C08DA24 /* Pods-BinanceAssignment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BinanceAssignment.debug.xcconfig"; path = "Target Support Files/Pods-BinanceAssignment/Pods-BinanceAssignment.debug.xcconfig"; sourceTree = "<group>"; };
 		8750B18BD463272361A7C72F /* Pods_BinanceAssignment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BinanceAssignment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA18016623A23E1000A23F47 /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
+		DA18016823A241D400A23F47 /* OrderBookSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderBookSnapshot.swift; sourceTree = "<group>"; };
+		DA18016A23A2423300A23F47 /* MarketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketViewModel.swift; sourceTree = "<group>"; };
 		DA19EC5E23A09BF500C51635 /* BinanceAssignmentBaseClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinanceAssignmentBaseClass.swift; sourceTree = "<group>"; };
 		DA19EC6023A09CFA00C51635 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -67,10 +73,12 @@
 			children = (
 				DA19EC5D23A09AE800C51635 /* Support Files */,
 				0D6F18AA239FF58500DBA30E /* AppDelegate.swift */,
-				0D6F18AC239FF58500DBA30E /* ViewController.swift */,
-				0D6F18AE239FF58500DBA30E /* Main.storyboard */,
+				0D6F18AC239FF58500DBA30E /* MarketViewController.swift */,
+				DA18016A23A2423300A23F47 /* MarketViewModel.swift */,
 				DA19EC5E23A09BF500C51635 /* BinanceAssignmentBaseClass.swift */,
 				DA19EC6023A09CFA00C51635 /* WebSocketManager.swift */,
+				DA18016623A23E1000A23F47 /* ApiManager.swift */,
+				DA18016823A241D400A23F47 /* OrderBookSnapshot.swift */,
 			);
 			path = BinanceAssignment;
 			sourceTree = "<group>";
@@ -96,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				0D6F18B1239FF58800DBA30E /* Assets.xcassets */,
+				0D6F18AE239FF58500DBA30E /* Main.storyboard */,
 				0D6F18B3239FF58800DBA30E /* LaunchScreen.storyboard */,
 				0D6F18B6239FF58800DBA30E /* Info.plist */,
 			);
@@ -217,8 +226,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D6F18AD239FF58500DBA30E /* ViewController.swift in Sources */,
+				0D6F18AD239FF58500DBA30E /* MarketViewController.swift in Sources */,
+				DA18016923A241D400A23F47 /* OrderBookSnapshot.swift in Sources */,
+				DA18016B23A2423300A23F47 /* MarketViewModel.swift in Sources */,
 				0D6F18AB239FF58500DBA30E /* AppDelegate.swift in Sources */,
+				DA18016723A23E1000A23F47 /* ApiManager.swift in Sources */,
 				DA19EC5F23A09BF500C51635 /* BinanceAssignmentBaseClass.swift in Sources */,
 				DA19EC6123A09CFA00C51635 /* WebSocketManager.swift in Sources */,
 			);
