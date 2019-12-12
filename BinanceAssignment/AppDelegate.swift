@@ -9,14 +9,18 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
+class AppDelegate: UIResponder, UIApplicationDelegate
+{
     var window: UIWindow?
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
-        window?.rootViewController = MarketViewController()
+        #if DEBUG
+        Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+        #endif
+        
+        window?.rootViewController = UINavigationController.init(rootViewController: RootViewController())
+//        window?.rootViewController = MarketViewController()
         return true
     }
 
@@ -41,7 +45,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 
+class RootViewController: UIViewController
+{
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        navigationController?.pushViewController(MarketViewController(), animated: true)
+    }
+}

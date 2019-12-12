@@ -42,11 +42,11 @@ class WebSocketManager: BABassClass, WebSocketDelegate
     
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String)
     {
-        print("Received text: \(text)")
+//        print("Received text: \(text)")
     }
     
     func websocketDidReceiveData(socket: WebSocketClient, data: Data)
     {
-        print("Received data: \(data.count)")
+//        print("Received data: \(data.count)")
     }
 }

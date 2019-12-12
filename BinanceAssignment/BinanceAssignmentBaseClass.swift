@@ -21,5 +21,31 @@ class BABassViewController: UIViewController
 
 class BATableViewCell: UITableViewCell
 {
+    required init?(coder: NSCoder)
+    {
+        super.init(coder: coder)
+    }
     
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?)
+    {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+        backgroundColor = .clear
+    }
+}
+
+class BATableView: UITableView
+{
+    required init?(coder: NSCoder)
+    {
+        super.init(coder: coder)
+    }
+    
+    override init(frame: CGRect, style: UITableView.Style)
+    {
+        super.init(frame: frame, style: style)
+        backgroundColor = .generalBackground
+        separatorStyle = .none
+        rowHeight = 25
+    }
 }
