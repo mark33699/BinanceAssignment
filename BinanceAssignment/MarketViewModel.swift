@@ -16,27 +16,35 @@ class MarketViewModel: BABassClass
     
     var askOrders = [Order]()
     var bidOrders = [Order]()
-    var lastUpdateId = 0
+    var snapshotLastUpdateId = 0
     
     override init()
     {
         super.init()
         
+        requestOrderBookSnapshot()
+        
         socketManager.didReceiveMessageHandler =
         { message -> () in
-            let obs = self.jsonStringToOrderBookStream(message)
-            if let obs = obs
+            let stream = self.jsonStringToOrderBookStream(message)
+            if let stream = stream
             {
-                self.askOrders = self.stringArrayToOrderArray(obs.asks)
-                self.bidOrders = self.stringArrayToOrderArray(obs.bids)
-                if let completion = self.completionHandler
+                if self.snapshotLastUpdateId != 0 &&
+                   stream.lastUpdateID >= self.snapshotLastUpdateId + 1
                 {
-                    completion()
+                    self.askOrders = self.stringArrayToOrderArray(stream.asks)
+                    self.bidOrders = self.stringArrayToOrderArray(stream.bids)
+
+                    if let completion = self.completionHandler
+                    {
+                        completion()
+                    }
                 }
             }
         }
     }
 
+    //snapshot just for lastUpdateId ?
     func requestOrderBookSnapshot()
     {
         ApiManager.apiRequest(with: .orederBook, objectType: OrderBookSnapshot.self)
@@ -45,14 +53,7 @@ class MarketViewModel: BABassClass
             switch result
             {
             case .success(let orderBookSnapshot):
-                self.lastUpdateId = orderBookSnapshot.lastUpdateId
-                self.askOrders = orderBookSnapshot.asks.map{ Order(priceLevel: $0.first!, quantity: $0.last!) }
-                self.bidOrders = orderBookSnapshot.bids.map{ Order(priceLevel: $0.first!, quantity: $0.last!) }
-                
-                if let completion = self.completionHandler
-                {
-                    completion()
-                }
+                self.snapshotLastUpdateId = orderBookSnapshot.lastUpdateId
             case .failure(let error):
                 print(error.localizedDescription)
             }

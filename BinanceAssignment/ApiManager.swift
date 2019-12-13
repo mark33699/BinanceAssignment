@@ -10,7 +10,7 @@ import UIKit
 
 enum ApiUrl: String
 {
-    case orederBook = "https://www.binance.com/api/v1/depth?symbol=BNBBTC&limit=1000"
+    case orederBook = "https://www.binance.com/api/v1/depth?symbol=BNBBTC&limit=5"
 }
 
 //APPError enum which shows all possible errors

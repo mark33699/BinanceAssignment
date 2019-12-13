@@ -48,8 +48,8 @@ class MarketViewController: BABassViewController, UITableViewDataSource
             let ao = viewModel.askOrders[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
             cell.updateUI(bidOrder: bo, askOrder: ao)
             
-            let p: CGFloat = CGFloat(indexPath.row + 1) / CGFloat(2000)
-            cell.updateBackgroundProportion(green: p, red: p)
+//            let p: CGFloat = CGFloat(indexPath.row + 1) / CGFloat(2000)
+//            cell.updateBackgroundProportion(green: p, red: p)
             
             return cell
         }
