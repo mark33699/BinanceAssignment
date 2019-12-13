@@ -11,7 +11,6 @@ import SnapKit
 
 class MarketViewController: BABassViewController, UITableViewDataSource
 {
-    let socketManager = WebSocketManager()
     let viewModel = MarketViewModel()
     let marketTableView = BATableView()
     
@@ -21,9 +20,9 @@ class MarketViewController: BABassViewController, UITableViewDataSource
         
         layoutUI()
         
-        viewModel.requestOrderBookSnapshot
+        viewModel.completionHandler =
         {
-            
+            self.marketTableView.reloadData()
         }
     }
     
@@ -39,15 +38,19 @@ class MarketViewController: BABassViewController, UITableViewDataSource
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1000 }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { max(viewModel.askOrders.count, viewModel.bidOrders.count) }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "\(OrderBookTblCell.self)", for: indexPath) as? OrderBookTblCell
         {
-            cell.updateUI()
+            let bo = viewModel.bidOrders[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
+            let ao = viewModel.askOrders[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
+            cell.updateUI(bidOrder: bo, askOrder: ao)
+            
             let p: CGFloat = CGFloat(indexPath.row + 1) / CGFloat(2000)
             cell.updateBackgroundProportion(green: p, red: p)
+            
             return cell
         }
         

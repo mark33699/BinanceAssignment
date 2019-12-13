@@ -29,15 +29,17 @@ class OrderBookTblCell: BATableViewCell
         layoutUI()
     }
     
-    var c: ConstraintMakerEditable!
     func layoutUI()
     {
         contentView.addSubview(bidBG)
         bidBG.backgroundColor = .orderBackgroundGreen
         contentView.addSubview(askBG)
         askBG.backgroundColor = .orderBackgroundRed
+        
+        let font = UIFont.boldSystemFont(ofSize: 11)
 
         contentView.addSubview(bidQty)
+        bidQty.font = font
         bidQty.textColor = .white
         bidQty.snp.makeConstraints
         { (maker) in
@@ -46,6 +48,7 @@ class OrderBookTblCell: BATableViewCell
         }
         
         contentView.addSubview(bidPrice)
+        bidPrice.font = font
         bidPrice.textAlignment = .right
         bidPrice.textColor = .orderTextGreen
         bidPrice.snp.makeConstraints
@@ -56,6 +59,7 @@ class OrderBookTblCell: BATableViewCell
         }
 
         contentView.addSubview(askPrice)
+        askPrice.font = font
         askPrice.textColor = .orderTextRed
         askPrice.snp.makeConstraints
         { (maker) in
@@ -65,6 +69,7 @@ class OrderBookTblCell: BATableViewCell
         }
 
         contentView.addSubview(askQty)
+        askQty.font = font
         askQty.textAlignment = .right
         askQty.textColor = .white
         askQty.snp.makeConstraints
@@ -75,12 +80,12 @@ class OrderBookTblCell: BATableViewCell
         }
     }
     
-    func updateUI()
+    func updateUI(bidOrder: Order, askOrder: Order)
     {
-        bidQty.text = "123"
-        bidPrice.text = "0.00000123"
-        askPrice.text = "0.00000456"
-        askQty.text = "456"
+        bidQty.text = bidOrder.quantity
+        bidPrice.text = bidOrder.priceLevel
+        askPrice.text = askOrder.priceLevel
+        askQty.text = askOrder.quantity
     }
     
     func updateBackgroundProportion(green: CGFloat, red: CGFloat)

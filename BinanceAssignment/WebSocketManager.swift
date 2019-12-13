@@ -12,12 +12,13 @@ import Starscream
 class WebSocketManager: BABassClass, WebSocketDelegate
 {
     var socket: WebSocket!
+    var didReceiveMessageHandler: ((_ message: String) -> Void)?
     
-    override init()
+    init(with urlString: String)
     {
         super.init()
         
-        var request = URLRequest(url: URL(string: "wss://stream.binance.com:9443/ws/bnbbtc@depth")!)
+        var request = URLRequest(url: URL(string: urlString)!)
         request.timeoutInterval = 5
         socket = WebSocket(request: request)
         socket.delegate = self
@@ -42,7 +43,10 @@ class WebSocketManager: BABassClass, WebSocketDelegate
     
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String)
     {
-//        print("Received text: \(text)")
+        if let handler = didReceiveMessageHandler
+        {
+            handler(text)
+        }
     }
     
     func websocketDidReceiveData(socket: WebSocketClient, data: Data)
