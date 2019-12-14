@@ -20,6 +20,7 @@ class MarketViewModel: BABassClass
     var askOrders = [Order]()
     var bidOrders = [Order]()
     var snapshotLastUpdateId = 0
+    var streamLastUpdateId = 0
     
     override init()
     {
@@ -29,14 +30,24 @@ class MarketViewModel: BABassClass
         
         socketManager.didReceiveMessageHandler =
         { message -> () in
-            let stream = self.jsonStringToOrderBookStream(message)
-            if let stream = stream
+            
+            if let stream = self.jsonStringToOrderBookStream(message)
             {
-                if self.snapshotLastUpdateId != 0 &&
-                   stream.lastUpdateID >= self.snapshotLastUpdateId + 1
+                if self.streamLastUpdateId == 0 ||
+                (stream.firstUpdateID == self.streamLastUpdateId + 1)
                 {
-                    self.updateOrderBook(stream)
+                    if self.snapshotLastUpdateId != 0 &&
+                       stream.lastUpdateID >= self.snapshotLastUpdateId + 1
+                    {
+                        self.updateOrderBook(stream)
+                    }
                 }
+                else
+                {
+//                    print("lose packet: \(self.streamLastUpdateId), \(stream.firstUpdateID)")
+                    self.requestOrderBookSnapshot()
+                }
+                self.streamLastUpdateId = stream.lastUpdateID
             }
         }
     }
@@ -50,11 +61,8 @@ class MarketViewModel: BABassClass
             {
             case .success(let snapshot):
                 self.snapshotLastUpdateId = snapshot.lastUpdateId
-                let allAsks = self.stringArrayToOrderArray(snapshot.asks).filter { $0.quantity != zeroString }
-                let allBids = self.stringArrayToOrderArray(snapshot.bids).filter { $0.quantity != zeroString }
-                
-                self.askOrders = allAsks
-                self.bidOrders = allBids
+                self.askOrders = self.stringArrayToOrderArray(snapshot.asks).filter { $0.quantity != zeroString }
+                self.bidOrders = self.stringArrayToOrderArray(snapshot.bids).filter { $0.quantity != zeroString }
                 
 //                print("snapshot asks\n\(self.askOrders)")
                 
