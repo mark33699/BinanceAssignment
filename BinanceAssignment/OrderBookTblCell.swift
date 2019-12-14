@@ -80,12 +80,24 @@ class OrderBookTblCell: BATableViewCell
         }
     }
     
-    func updateUI(bidOrder: Order, askOrder: Order)
+    func updateUI(bidOrder: Order, askOrder: Order, qtyDigit: Int = 8)
     {
+        //數量的精度也可以做在資料面, 但考量到有可能取不到ExchangeInfo的情況, 還是做在UI面
+        //TODO: sum完之後qty會變成.0
+//        let lose = qtyDigit == 0 ? maxDigits + 1 : maxDigits - qtyDigit
+//        let bqStr = bidOrder.quantity
+//        let bqEnd = bqStr.index(bqStr.endIndex, offsetBy: -lose)
+//        let bq = bqStr[bqStr.startIndex..<bqEnd]
+//        bidQty.text = String(bq)
+//        let aqStr = askOrder.quantity
+//        let aqEnd = aqStr.index(aqStr.endIndex, offsetBy: -lose)
+//        let aq = aqStr[aqStr.startIndex..<aqEnd]
+//        askQty.text = String(aq)
+        
         bidQty.text = bidOrder.quantity
+        askQty.text = askOrder.quantity
         bidPrice.text = bidOrder.priceLevel
         askPrice.text = askOrder.priceLevel
-        askQty.text = askOrder.quantity
     }
     
     func updateBackgroundProportion(green: CGFloat, red: CGFloat)

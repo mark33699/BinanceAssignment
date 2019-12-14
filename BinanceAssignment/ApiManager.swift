@@ -8,11 +8,6 @@
 
 import UIKit
 
-//enum ApiUrl: String
-//{
-//    case orderBook = "https://www.binance.com/api/v1/depth?symbol=LINKBTC&limit=1000"
-//}
-
 struct ApiUrl
 {
     static let orderBook = "https://www.binance.com/api/v1/depth?symbol=\(symbol)&limit=1000"

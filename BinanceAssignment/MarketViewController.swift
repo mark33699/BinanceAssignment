@@ -11,6 +11,14 @@ import SnapKit
 
 let symbol = "LINKBTC"
 
+enum MarketLoseDigitRange
+{
+    case noLose
+    case oneLose
+    case twoLose
+    case threeLose
+}
+
 class MarketViewController: BABassViewController, UITableViewDataSource
 {
     let viewModel = MarketViewModel()
@@ -46,9 +54,30 @@ class MarketViewController: BABassViewController, UITableViewDataSource
     {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "\(OrderBookTblCell.self)", for: indexPath) as? OrderBookTblCell
         {
-            let bo = viewModel.bidOrders[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
-            let ao = viewModel.askOrders[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
-            cell.updateUI(bidOrder: bo, askOrder: ao)
+            var currentAskOrders = [Order]()
+            var currentBidOrders = [Order]()
+            
+            let loseDigitRange: MarketLoseDigitRange = .threeLose
+            switch loseDigitRange
+            {
+                case .noLose:
+                    currentAskOrders = viewModel.askOrders
+                    currentBidOrders = viewModel.bidOrders
+                case .oneLose:
+                    currentAskOrders = viewModel.askOrdersLose1
+                    currentBidOrders = viewModel.bidOrdersLose1
+                case .twoLose:
+                    currentAskOrders = viewModel.askOrdersLose2
+                    currentBidOrders = viewModel.bidOrdersLose2
+                case .threeLose:
+                    currentAskOrders = viewModel.askOrdersLose3
+                    currentBidOrders = viewModel.bidOrdersLose3
+            }
+            
+            let bo = currentBidOrders[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
+            let ao = currentAskOrders[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
+            
+            cell.updateUI(bidOrder: bo, askOrder: ao, qtyDigit: viewModel.quantityDigits)
             
 //            let p: CGFloat = CGFloat(indexPath.row + 1) / CGFloat(2000)
 //            cell.updateBackgroundProportion(green: p, red: p)
