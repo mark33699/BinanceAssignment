@@ -22,10 +22,14 @@ class MarketViewModel: BABassClass
     var snapshotLastUpdateId = 0
     var streamLastUpdateId = 0
     
+    var priceDigits = 8
+    var quantityDigits = 8
+    
     override init()
     {
         super.init()
         
+        requestExchangeInfo()
         requestOrderBookSnapshot()
         
         socketManager.didReceiveMessageHandler =
@@ -48,6 +52,28 @@ class MarketViewModel: BABassClass
                     self.requestOrderBookSnapshot()
                 }
                 self.streamLastUpdateId = stream.lastUpdateID
+            }
+        }
+    }
+    
+    func requestExchangeInfo()
+    {
+        ApiManager.apiRequest(with: ApiUrl.exchangeInfo, objectType: ExchangeInfo.self)
+        { (result) in
+
+            switch result
+            {
+            case .success(let info):
+                if let minTickSize = info.data.first?.minTickSize
+                {
+                    self.priceDigits = self.getDigits(by: minTickSize)
+                }
+                if let minTradeAmount = info.data.first?.minTradeAmount
+                {
+                    self.quantityDigits = self.getDigits(by: minTradeAmount)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
@@ -152,6 +178,18 @@ class MarketViewModel: BABassClass
         catch
         {
             return nil
+        }
+    }
+    
+    func getDigits(by string: String) -> Int
+    {
+        if string.contains(".")
+        {
+            return string.split(separator: ".").last!.count
+        }
+        else
+        {
+            return 0
         }
     }
 }

@@ -16,6 +16,7 @@ import UIKit
 struct ApiUrl
 {
     static let orderBook = "https://www.binance.com/api/v1/depth?symbol=\(symbol)&limit=1000"
+    static let exchangeInfo = "https://www.binance.com/gateway-api/v1/public/asset-service/product/get-exchange-info?symbol=\(symbol)"
 }
 
 //APPError enum which shows all possible errors
