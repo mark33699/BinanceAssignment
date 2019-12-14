@@ -9,6 +9,11 @@
 import UIKit
 import Starscream
 
+struct SocketUrl
+{
+    static let orderBook = "wss://stream.binance.com:9443/ws/\(symbol.lowercased())@depth"
+}
+
 class WebSocketManager: BABassClass, WebSocketDelegate
 {
     var socket: WebSocket!

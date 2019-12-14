@@ -9,6 +9,8 @@
 import UIKit
 import SnapKit
 
+let symbol = "LINKBTC"
+
 class MarketViewController: BABassViewController, UITableViewDataSource
 {
     let viewModel = MarketViewModel()

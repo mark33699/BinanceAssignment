@@ -8,9 +8,14 @@
 
 import UIKit
 
-enum ApiUrl: String
+//enum ApiUrl: String
+//{
+//    case orderBook = "https://www.binance.com/api/v1/depth?symbol=LINKBTC&limit=1000"
+//}
+
+struct ApiUrl
 {
-    case orederBook = "https://www.binance.com/api/v1/depth?symbol=LINKBTC&limit=1000"
+    static let orderBook = "https://www.binance.com/api/v1/depth?symbol=\(symbol)&limit=1000"
 }
 
 //APPError enum which shows all possible errors
@@ -32,9 +37,9 @@ enum Result<T>
 class ApiManager: BABassClass
 {
     //dataRequest which sends request to given URL and convert to Decodable Object
-    class func apiRequest<T: Decodable>(with url: ApiUrl, objectType: T.Type, completion: @escaping (Result<T>) -> Void)
+    class func apiRequest<T: Decodable>(with url: String, objectType: T.Type, completion: @escaping (Result<T>) -> Void)
     {
-        let dataURL = URL(string: url.rawValue)!
+        let dataURL = URL(string: url)!
         let session = URLSession.shared
         let request = URLRequest(url: dataURL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
 

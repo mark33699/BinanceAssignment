@@ -15,7 +15,7 @@ class MarketViewModel: BABassClass
 {
     var completionHandler: (() -> Void)! = {}
     
-    let socketManager = WebSocketManager.init(with: "wss://stream.binance.com:9443/ws/linkbtc@depth")
+    let socketManager = WebSocketManager.init(with: SocketUrl.orderBook)
     
     var askOrders = [Order]()
     var bidOrders = [Order]()
@@ -54,7 +54,7 @@ class MarketViewModel: BABassClass
 
     func requestOrderBookSnapshot()
     {
-        ApiManager.apiRequest(with: .orederBook, objectType: OrderBookSnapshot.self)
+        ApiManager.apiRequest(with: ApiUrl.orderBook, objectType: OrderBookSnapshot.self)
         { (result) in
             
             switch result
@@ -132,7 +132,6 @@ class MarketViewModel: BABassClass
                 if isSamePrice == false && newOrder.quantity != zeroString
                 {
                     originOrders.insert(newOrder, at: newIndex)
-                    originOrders.popLast()
                 }
             }
         }
