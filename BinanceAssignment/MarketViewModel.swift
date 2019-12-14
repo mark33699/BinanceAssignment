@@ -35,7 +35,7 @@ class MarketViewModel: BABassClass
                 if self.snapshotLastUpdateId != 0 &&
                    stream.lastUpdateID >= self.snapshotLastUpdateId + 1
                 {
-                    self.updataOrderBook(stream)
+                    self.updateOrderBook(stream)
                 }
             }
         }
@@ -53,9 +53,6 @@ class MarketViewModel: BABassClass
                 let allAsks = self.stringArrayToOrderArray(snapshot.asks).filter { $0.quantity != zeroString }
                 let allBids = self.stringArrayToOrderArray(snapshot.bids).filter { $0.quantity != zeroString }
                 
-//                self.askOrders = Array(allAsks.prefix(maxDisplayOrderCount))
-//                self.bidOrders = Array(allBids.prefix(maxDisplayOrderCount))
-                
                 self.askOrders = allAsks
                 self.bidOrders = allBids
                 
@@ -72,32 +69,45 @@ class MarketViewModel: BABassClass
         }
     }
     
-    func updataOrderBook(_ stream: OrderBookStream)
+    func updateOrderBook(_ stream: OrderBookStream)
     {
         let newAsks = self.stringArrayToOrderArray(stream.asks)
         let newBids = self.stringArrayToOrderArray(stream.bids)
         
 //        print("stream asks\n\(newAsks)")
         
-        for newOrder: Order in newAsks
+        updateOrder(newOrders: newAsks, originOrders: &askOrders, isAsk: true)
+        updateOrder(newOrders: newBids, originOrders: &bidOrders, isAsk: false)
+        
+//        print("updated asks\n\(self.askOrders)")
+        
+        self.completionHandler()
+    }
+    
+    func updateOrder(newOrders: [Order],
+                     originOrders: inout [Order],
+                     isAsk: Bool)
+    {
+        for newOrder: Order in newOrders
         {
-            if newOrder.priceLevel < askOrders.last!.priceLevel
+            if (isAsk && newOrder.priceLevel < originOrders.last!.priceLevel)
+            || (!isAsk && newOrder.priceLevel > originOrders.last!.priceLevel)
             {
                 var isSamePrice = false
                 var newIndex = 0
                 
                 //replace
-                for (offset, originOrder) in askOrders.enumerated()
+                for (offset, originOrder) in originOrders.enumerated()
                 {
                     if newOrder.priceLevel == originOrder.priceLevel
                     {
                         if newOrder.quantity == zeroString
                         {
-                            askOrders.remove(at: offset)
+                            originOrders.remove(at: offset)
                         }
                         else
                         {
-                            askOrders[offset] = newOrder
+                            originOrders[offset] = newOrder
                         }
                         isSamePrice = true
                         break
@@ -113,15 +123,11 @@ class MarketViewModel: BABassClass
                 //insert
                 if isSamePrice == false && newOrder.quantity != zeroString
                 {
-                    askOrders.insert(newOrder, at: newIndex)
-                    askOrders.popLast()
+                    originOrders.insert(newOrder, at: newIndex)
+                    originOrders.popLast()
                 }
             }
         }
-
-//        print("updated asks\n\(self.askOrders)")
-        
-        self.completionHandler()
     }
     
     func stringArrayToOrderArray(_ array: [[String]]) -> [Order]
