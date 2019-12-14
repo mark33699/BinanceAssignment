@@ -38,7 +38,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { max(viewModel.askOrders.count, viewModel.bidOrders.count) }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { maxDisplayOrderCount }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {

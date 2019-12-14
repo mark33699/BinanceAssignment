@@ -36,7 +36,7 @@ class OrderBookTblCell: BATableViewCell
         contentView.addSubview(askBG)
         askBG.backgroundColor = .orderBackgroundRed
         
-        let font = UIFont.boldSystemFont(ofSize: 11)
+        let font = UIFont.boldSystemFont(ofSize: 13)
 
         contentView.addSubview(bidQty)
         bidQty.font = font
