@@ -57,7 +57,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource
             var currentAskOrders = [Order]()
             var currentBidOrders = [Order]()
             
-            let loseDigitRange: MarketLoseDigitRange = .noLose
+            let loseDigitRange: MarketLoseDigitRange = .oneLose
             switch loseDigitRange
             {
                 case .noLose:
