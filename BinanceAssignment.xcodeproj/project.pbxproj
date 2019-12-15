@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D2C225B23A68A150082F18F /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2C225A23A68A150082F18F /* Double+Ext.swift */; };
+		0D5AAE8723A6924000C8AD06 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5AAE8623A6924000C8AD06 /* String+Ext.swift */; };
 		0D6F18AB239FF58500DBA30E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6F18AA239FF58500DBA30E /* AppDelegate.swift */; };
 		0D6F18AD239FF58500DBA30E /* MarketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6F18AC239FF58500DBA30E /* MarketViewController.swift */; };
 		0D6F18B0239FF58500DBA30E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D6F18AE239FF58500DBA30E /* Main.storyboard */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		02A0ACCA166E412B09C05E9B /* Pods-BinanceAssignment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BinanceAssignment.release.xcconfig"; path = "Target Support Files/Pods-BinanceAssignment/Pods-BinanceAssignment.release.xcconfig"; sourceTree = "<group>"; };
 		0D2C225A23A68A150082F18F /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
+		0D5AAE8623A6924000C8AD06 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		0D6F18A7239FF58500DBA30E /* BinanceAssignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BinanceAssignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D6F18AA239FF58500DBA30E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0D6F18AC239FF58500DBA30E /* MarketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketViewController.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				DA18016C23A3958300A23F47 /* Array+Ext.swift */,
 				0D81058723A54639009F2890 /* ExchangeInfoModel.swift */,
 				0D2C225A23A68A150082F18F /* Double+Ext.swift */,
+				0D5AAE8623A6924000C8AD06 /* String+Ext.swift */,
 			);
 			path = BinanceAssignment;
 			sourceTree = "<group>";
@@ -244,6 +247,7 @@
 				0D6F18AD239FF58500DBA30E /* MarketViewController.swift in Sources */,
 				DA18016923A241D400A23F47 /* OrderBookModel.swift in Sources */,
 				0D2C225B23A68A150082F18F /* Double+Ext.swift in Sources */,
+				0D5AAE8723A6924000C8AD06 /* String+Ext.swift in Sources */,
 				0DFDA3F823A29B6400E94E29 /* OrderBookTblCell.swift in Sources */,
 				DA18016B23A2423300A23F47 /* MarketViewModel.swift in Sources */,
 				0D6F18AB239FF58500DBA30E /* AppDelegate.swift in Sources */,

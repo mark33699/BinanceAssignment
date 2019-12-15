@@ -194,15 +194,16 @@ class MarketViewModel: BABassClass
 //            print("加前\(self.askOrders)")
             self.askOrdersLose1 = self.sumOrderBook(self.askOrders, isAsk: true)
             self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders, isAsk: false)
-            self.askOrdersLose2 = self.sumOrderBook(self.askOrdersLose1, isAsk: true)
-            self.bidOrdersLose2 = self.sumOrderBook(self.bidOrdersLose1, isAsk: false)
-            self.askOrdersLose3 = self.sumOrderBook(self.askOrdersLose2, isAsk: true)
-            self.bidOrdersLose3 = self.sumOrderBook(self.bidOrdersLose2, isAsk: false)
+            self.askOrdersLose2 = self.sumOrderBook(self.askOrders, loseDigit: 2, isAsk: true)
+            self.bidOrdersLose2 = self.sumOrderBook(self.bidOrders, loseDigit: 2, isAsk: false)
+            self.askOrdersLose3 = self.sumOrderBook(self.askOrders, loseDigit: 3, isAsk: true)
+            self.bidOrdersLose3 = self.sumOrderBook(self.bidOrders, loseDigit: 3, isAsk: false)
 //            print("加後\(self.askOrdersLose1)")
         }
     }
     
     private func sumOrderBook(_ orders: [Order],
+                              loseDigit: Int = 1,
                               isAsk: Bool) -> [Order]
     {
         let loseDigitOrderBook = isAsk ?
@@ -211,12 +212,12 @@ class MarketViewModel: BABassClass
             
             if order.priceLevel.last == "0"
             {
-                return Order(priceLevel: self.getSubStringToSecondLast(order.priceLevel),
+                return Order(priceLevel: order.priceLevel.substring(cut: loseDigit),
                              quantity: order.quantity)
             }
             else
             {
-                let shouldDigit = order.priceLevel.components(separatedBy: ".").last!.count - 1
+                let shouldDigit = order.priceLevel.components(separatedBy: ".").last!.count - loseDigit
                 let doublePrice = Double(order.priceLevel)!
                 let ceilPrice = doublePrice.ceiling(toDecimal: shouldDigit)
                 var newPrice = "\(ceilPrice)"
@@ -230,7 +231,7 @@ class MarketViewModel: BABassClass
         orders.map
         { (order) -> Order in
 
-            return Order(priceLevel: self.getSubStringToSecondLast(order.priceLevel),
+            return Order(priceLevel: order.priceLevel.substring(cut: loseDigit),
                          quantity: order.quantity)
         }
         
@@ -261,13 +262,6 @@ class MarketViewModel: BABassClass
         }
 
         return sumOrderBook
-    }
-    
-    private func getSubStringToSecondLast(_ str: String) -> String
-    {
-        let end = str.index(str.endIndex, offsetBy: -1)
-        let newString = str[str.startIndex..<end]
-        return String(newString)
     }
     
     private func stringArrayToOrderArray(_ array: [[String]]) -> [Order]
