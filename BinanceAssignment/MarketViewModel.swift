@@ -156,7 +156,8 @@ class MarketViewModel: BABassClass
                         break
                     }
                     
-                    if newOrder.priceLevel < originOrder.priceLevel
+                    if (isAsk && newOrder.priceLevel < originOrder.priceLevel)
+                    || (!isAsk && newOrder.priceLevel > originOrder.priceLevel)
                     {
                         newIndex = offset
                         break
@@ -197,6 +198,13 @@ class MarketViewModel: BABassClass
             self.bidOrdersLose2 = self.sumOrderBook(self.bidOrdersLose1)
             self.askOrdersLose3 = self.sumOrderBook(self.askOrdersLose2)
             self.bidOrdersLose3 = self.sumOrderBook(self.bidOrdersLose2)
+            
+//            self.askOrdersLose1 = self.sumOrderBook(self.askOrders)
+//            self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders)
+//            self.askOrdersLose2 = self.sumOrderBook(self.askOrders, loseDigit: 2)
+//            self.bidOrdersLose2 = self.sumOrderBook(self.bidOrders, loseDigit: 2)
+//            self.askOrdersLose3 = self.sumOrderBook(self.askOrders, loseDigit: 3)
+//            self.bidOrdersLose3 = self.sumOrderBook(self.bidOrders, loseDigit: 3)
         }
     }
     
