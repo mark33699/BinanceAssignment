@@ -19,10 +19,12 @@ enum MarketLoseDigitRange
     case threeLose
 }
 
-class MarketViewController: BABassViewController, UITableViewDataSource
+class MarketViewController: BABassViewController, UITableViewDataSource, UITableViewDelegate
 {
     let viewModel = MarketViewModel()
     let marketTableView = BATableView()
+    
+    var currentLoseDigit: MarketLoseDigitRange = .noLose
     
     override func viewDidLoad()
     {
@@ -36,11 +38,19 @@ class MarketViewController: BABassViewController, UITableViewDataSource
         }
     }
     
+    @objc func trg(s: UISwitch)
+    {
+        currentLoseDigit = s.isOn ? .twoLose : .oneLose
+    }
+    
     func layoutUI()
     {
         view.addSubview(marketTableView)
         marketTableView.dataSource = self
+        marketTableView.delegate = self
         marketTableView.register(OrderBookTblCell.self, forCellReuseIdentifier: "\(OrderBookTblCell.self)")
+        marketTableView.register(OrderBookHeader.self, forHeaderFooterViewReuseIdentifier: "\(OrderBookHeader.self)")
+        marketTableView.sectionHeaderHeight = 40
         marketTableView.snp.makeConstraints
         { (maker) in
             maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(40)
@@ -57,8 +67,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource
             var currentAskOrders = [Order]()
             var currentBidOrders = [Order]()
             
-            let loseDigitRange: MarketLoseDigitRange = .oneLose
-            switch loseDigitRange
+            switch currentLoseDigit
             {
                 case .noLose:
                     currentAskOrders = viewModel.askOrders
@@ -86,5 +95,10 @@ class MarketViewController: BABassViewController, UITableViewDataSource
         }
         
         return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+    {
+        tableView.dequeueReusableHeaderFooterView(withIdentifier: "\(OrderBookHeader.self)")
     }
 }
