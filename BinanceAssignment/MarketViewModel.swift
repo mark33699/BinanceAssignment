@@ -63,7 +63,7 @@ class MarketViewModel: BABassClass
         }
     }
     
-    func requestExchangeInfo()
+    private func requestExchangeInfo()
     {
         ApiManager.apiRequest(with: ApiUrl.exchangeInfo, objectType: ExchangeInfo.self)
         { (result) in
@@ -84,8 +84,8 @@ class MarketViewModel: BABassClass
             }
         }
     }
-
-    func requestOrderBookSnapshot()
+    
+    private func requestOrderBookSnapshot()
     {
         ApiManager.apiRequest(with: ApiUrl.orderBook, objectType: OrderBookSnapshot.self)
         { (result) in
@@ -96,32 +96,10 @@ class MarketViewModel: BABassClass
                 self.snapshotLastUpdateId = snapshot.lastUpdateId
                 self.askOrders = self.stringArrayToOrderArray(snapshot.asks).filter { $0.quantity != zeroString }
                 self.bidOrders = self.stringArrayToOrderArray(snapshot.bids).filter { $0.quantity != zeroString }
+
 //                print("snapshot asks\n\(self.askOrders)")
                 
-                switch self.priceDigits
-                {
-                case 0:
-                    print("no need sum")
-                    
-                case 1:
-                    self.askOrdersLose1 = self.sumOrderBook(self.askOrders)
-                    self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders)
-                    
-                case 2:
-                    self.askOrdersLose1 = self.sumOrderBook(self.askOrders)
-                    self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders)
-                    self.askOrdersLose2 = self.sumOrderBook(self.askOrdersLose1)
-                    self.bidOrdersLose2 = self.sumOrderBook(self.bidOrdersLose1)
-                    
-                default:
-                    
-                    self.askOrdersLose1 = self.sumOrderBook(self.askOrders)
-                    self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders)
-                    self.askOrdersLose2 = self.sumOrderBook(self.askOrdersLose1)
-                    self.bidOrdersLose2 = self.sumOrderBook(self.bidOrdersLose1)
-                    self.askOrdersLose3 = self.sumOrderBook(self.askOrdersLose2)
-                    self.bidOrdersLose3 = self.sumOrderBook(self.bidOrdersLose2)
-                }
+                self.sumAllOrderBook()
                 
                 DispatchQueue.main.async
                 {
@@ -134,7 +112,7 @@ class MarketViewModel: BABassClass
         }
     }
     
-    func updateOrderBook(_ stream: OrderBookStream)
+    private func updateOrderBook(_ stream: OrderBookStream)
     {
         let newAsks = self.stringArrayToOrderArray(stream.asks)
         let newBids = self.stringArrayToOrderArray(stream.bids)
@@ -144,43 +122,12 @@ class MarketViewModel: BABassClass
         updateOrder(newOrders: newBids, originOrders: &bidOrders, isAsk: false)
 //        print("updated asks\n\(self.askOrders)")
         
-        switch self.priceDigits
-        {
-        case 0:
-            print("no need sum")
-            
-        case 1:
-            updateOrder(newOrders: sumOrderBook(newAsks), originOrders: &askOrdersLose1, isAsk: true)
-            updateOrder(newOrders: sumOrderBook(newBids), originOrders: &bidOrdersLose1, isAsk: false)
-            
-        case 2:
-            let newAsksLose1 = sumOrderBook(newAsks)
-            let newBidsLose1 = sumOrderBook(newBids)
-            
-            updateOrder(newOrders: newAsksLose1, originOrders: &askOrdersLose1, isAsk: true)
-            updateOrder(newOrders: newBidsLose1, originOrders: &bidOrdersLose1, isAsk: false)
-            updateOrder(newOrders: sumOrderBook(newAsksLose1), originOrders: &askOrdersLose2, isAsk: true)
-            updateOrder(newOrders: sumOrderBook(newBidsLose1), originOrders: &bidOrdersLose2, isAsk: false)
-            
-        default:
-
-            let newAsksLose1 = sumOrderBook(newAsks)
-            let newBidsLose1 = sumOrderBook(newBids)
-            let newAsksLose2 = sumOrderBook(newAsksLose1)
-            let newBidsLose2 = sumOrderBook(newBidsLose1)
-            
-            updateOrder(newOrders: newAsksLose1, originOrders: &askOrdersLose1, isAsk: true)
-            updateOrder(newOrders: newBidsLose1, originOrders: &bidOrdersLose1, isAsk: false)
-            updateOrder(newOrders: newAsksLose2, originOrders: &askOrdersLose2, isAsk: true)
-            updateOrder(newOrders: newBidsLose2, originOrders: &bidOrdersLose2, isAsk: false)
-            updateOrder(newOrders: sumOrderBook(newAsksLose2), originOrders: &askOrdersLose3, isAsk: true)
-            updateOrder(newOrders: sumOrderBook(newBidsLose2), originOrders: &bidOrdersLose3, isAsk: false)
-        }
+        sumAllOrderBook()
         
         self.completionHandler()
     }
     
-    func updateOrder(newOrders: [Order],
+    private func updateOrder(newOrders: [Order],
                      originOrders: inout [Order],
                      isAsk: Bool)
     {
@@ -225,7 +172,35 @@ class MarketViewModel: BABassClass
         }
     }
     
-    func sumOrderBook(_ orders: [Order], loseDigit: Int = 1) -> [Order]
+    private func sumAllOrderBook()
+    {
+        switch self.priceDigits
+        {
+        case 0:
+            print("no need sum")
+            
+        case 1:
+            self.askOrdersLose1 = self.sumOrderBook(self.askOrders)
+            self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders)
+            
+        case 2:
+            self.askOrdersLose1 = self.sumOrderBook(self.askOrders)
+            self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders)
+            self.askOrdersLose2 = self.sumOrderBook(self.askOrdersLose1)
+            self.bidOrdersLose2 = self.sumOrderBook(self.bidOrdersLose1)
+            
+        default:
+            
+            self.askOrdersLose1 = self.sumOrderBook(self.askOrders)
+            self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders)
+            self.askOrdersLose2 = self.sumOrderBook(self.askOrdersLose1)
+            self.bidOrdersLose2 = self.sumOrderBook(self.bidOrdersLose1)
+            self.askOrdersLose3 = self.sumOrderBook(self.askOrdersLose2)
+            self.bidOrdersLose3 = self.sumOrderBook(self.bidOrdersLose2)
+        }
+    }
+    
+    private func sumOrderBook(_ orders: [Order], loseDigit: Int = 1) -> [Order]
     {
         let loseDigitOrderBook = orders.map
         { (order) -> Order in
@@ -265,12 +240,12 @@ class MarketViewModel: BABassClass
         return sumOrderBook
     }
     
-    func stringArrayToOrderArray(_ array: [[String]]) -> [Order]
+    private func stringArrayToOrderArray(_ array: [[String]]) -> [Order]
     {
         array.map{ Order(priceLevel: $0.first!, quantity: $0.last!) }
     }
     
-    func jsonStringToOrderBookStream(_ jsonString: String) -> OrderBookStream?
+    private func jsonStringToOrderBookStream(_ jsonString: String) -> OrderBookStream?
     {
         do
         {
@@ -283,7 +258,7 @@ class MarketViewModel: BABassClass
         }
     }
     
-    func getDigits(by string: String) -> Int
+    private func getDigits(by string: String) -> Int
     {
         if string.contains(".")
         {
