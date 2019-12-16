@@ -82,26 +82,26 @@ class OrderBookTblCell: BATableViewCell
     
     func updateUI(bidOrder: Order, askOrder: Order, qtyDigit: Int, priceDigit: Int)
     {
+        bidQty.text = bidOrder.quantity
+        askQty.text = askOrder.quantity
         bidPrice.text = bidOrder.priceLevel
         askPrice.text = askOrder.priceLevel
-        if bidOrder.quantity != "" && askOrder.quantity != ""
+        if bidOrder.quantity != ""
         {
             bidQty.text = "\(Double(bidOrder.quantity)!.rounding(toDecimal: qtyDigit))"
-            askQty.text = "\(Double(askOrder.quantity)!.rounding(toDecimal: qtyDigit))"
-
             while bidQty.text!.components(separatedBy: ".").last!.count < qtyDigit
             {
                 bidQty.text! = bidQty.text! + "0"
             }
+        }
+        
+        if askOrder.quantity != ""
+        {
+            askQty.text = "\(Double(askOrder.quantity)!.rounding(toDecimal: qtyDigit))"
             while askQty.text!.components(separatedBy: ".").last!.count < qtyDigit
             {
                 askQty.text! = askQty.text! + "0"
             }
-        }
-        else
-        {
-            bidQty.text = bidOrder.quantity
-            askQty.text = askOrder.quantity
         }
     }
     
