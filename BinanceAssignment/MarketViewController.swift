@@ -9,7 +9,10 @@
 import UIKit
 import SnapKit
 
-let symbol = "LINKBTC"
+let symbol = "BNBBTC"
+//let symbol = "LINKBTC"
+let maxDisplayOrderCount = 15
+let maxDisplayHistoryCount = 15
 
 enum MarketLoseDigitRange: Int
 {
@@ -21,8 +24,11 @@ enum MarketLoseDigitRange: Int
 
 class MarketViewController: BABassViewController, UITableViewDataSource, UITableViewDelegate
 {
-    let viewModel = MarketViewModel()
-    let marketTableView = BATableView()
+    let orderVM = MarketOrderViewModel()
+    let orderTableView = BATableView()
+    
+    let historyVM = MarketHistroyViewModel()
+    let historyTableView = BATableView()
     
     var currentLoseDigit: MarketLoseDigitRange = .noLose
     
@@ -32,62 +38,81 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         
         layoutUI()
         
-        viewModel.completionHandler =
+//        orderVM.completionHandler =
+//        {[weak self] in
+//            self?.orderTableView.reloadData()
+//        }
+        
+        historyVM.completionHandler =
         {[weak self] in
-            
-            self?.marketTableView.reloadData()
+            self?.historyTableView.reloadData()
         }
     }
     
-    func layoutUI()
+    private func layoutUI()
     {
-        view.addSubview(marketTableView)
-        marketTableView.dataSource = self
-        marketTableView.delegate = self
-        marketTableView.register(OrderBookTblCell.self, forCellReuseIdentifier: "\(OrderBookTblCell.self)")
-        marketTableView.register(OrderBookHeader.self, forHeaderFooterViewReuseIdentifier: "\(OrderBookHeader.self)")
-        marketTableView.sectionHeaderHeight = 40
-        marketTableView.snp.makeConstraints
+//        view.addSubview(orderTableView)
+//        orderTableView.dataSource = self
+//        orderTableView.delegate = self
+//        orderTableView.register(OrderBookTblCell.self, forCellReuseIdentifier: "\(OrderBookTblCell.self)")
+//        orderTableView.register(OrderBookHeader.self, forHeaderFooterViewReuseIdentifier: "\(OrderBookHeader.self)")
+//        orderTableView.sectionHeaderHeight = 40
+//        orderTableView.snp.makeConstraints
+//        { (maker) in
+//            maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(40)
+//            maker.bottom.left.right.equalTo(self.view.safeAreaLayoutGuide)
+//        }
+        
+        view.addSubview(historyTableView)
+        historyTableView.dataSource = self
+        historyTableView.delegate = self
+        historyTableView.register(MarketHistoryTblCell.self, forCellReuseIdentifier: "\(MarketHistoryTblCell.self)")
+//        historyTableView.register(OrderBookHeader.self, forHeaderFooterViewReuseIdentifier: "\(OrderBookHeader.self)")
+        historyTableView.sectionHeaderHeight = 40
+        historyTableView.snp.makeConstraints
         { (maker) in
             maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(40)
             maker.bottom.left.right.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { maxDisplayOrderCount }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        if tableView == orderTableView
+        {
+            return maxDisplayOrderCount
+        }
+        else if tableView == historyTableView
+        {
+            return maxDisplayHistoryCount
+        }
+        return 0
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "\(OrderBookTblCell.self)", for: indexPath) as? OrderBookTblCell
+        if tableView == orderTableView
         {
-            var currentAskOrders = [Order]()
-            var currentBidOrders = [Order]()
-            
-            switch currentLoseDigit
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "\(OrderBookTblCell.self)", for: indexPath) as? OrderBookTblCell
             {
-                case .noLose:
-                    currentAskOrders = viewModel.askOrders
-                    currentBidOrders = viewModel.bidOrders
-                case .oneLose:
-                    currentAskOrders = viewModel.askOrdersLose1
-                    currentBidOrders = viewModel.bidOrdersLose1
-                case .twoLose:
-                    currentAskOrders = viewModel.askOrdersLose2
-                    currentBidOrders = viewModel.bidOrdersLose2
-                case .threeLose:
-                    currentAskOrders = viewModel.askOrdersLose3
-                    currentBidOrders = viewModel.bidOrdersLose3
+                let bo = getCurrentOrder(isAsk: false)[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
+                let ao = getCurrentOrder(isAsk: true)[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
+                
+                cell.updateUI(bidOrder: bo, askOrder: ao, qtyDigit: orderVM.quantityDigits)
+                
+    //            let p: CGFloat = CGFloat(indexPath.row + 1) / CGFloat(2000)
+    //            cell.updateBackgroundProportion(green: p, red: p)
+                
+                return cell
             }
-            
-            let bo = currentBidOrders[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
-            let ao = currentAskOrders[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
-            
-            cell.updateUI(bidOrder: bo, askOrder: ao, qtyDigit: viewModel.quantityDigits)
-            
-//            let p: CGFloat = CGFloat(indexPath.row + 1) / CGFloat(2000)
-//            cell.updateBackgroundProportion(green: p, red: p)
-            
-            return cell
+        }
+        else if tableView == historyTableView
+        {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "\(MarketHistoryTblCell.self)", for: indexPath) as? MarketHistoryTblCell
+            {
+                cell.updateUI(history: historyVM.historys[safe: indexPath.row] ?? MarketHistory(eventTime: 0, price: "", quantity: "", isBuyer: true))
+                return cell
+            }
         }
         
         return UITableViewCell()
@@ -95,10 +120,17 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
     {
-        if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "\(OrderBookHeader.self)") as? OrderBookHeader
+        if tableView == orderTableView
         {
-            header.digitLoseBtn.addTarget(self, action: #selector(digitSelect), for: .touchUpInside)
-            return header
+            if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "\(OrderBookHeader.self)") as? OrderBookHeader
+            {
+                header.digitLoseBtn.addTarget(self, action: #selector(digitSelect), for: .touchUpInside)
+                return header
+            }
+        }
+        else if tableView == historyTableView
+        {
+            
         }
         return nil
     }
@@ -108,13 +140,13 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         let popoverVC = DigitSelectViewController()
         
         popoverVC.modalPresentationStyle = .popover
-        popoverVC.preferredContentSize = CGSize(width: digitSelectMenuWidth, height: viewModel.priceDigitsCount * digitSelectButtonHeight)
+        popoverVC.preferredContentSize = CGSize(width: digitSelectMenuWidth, height: orderVM.priceDigitsCount * digitSelectButtonHeight)
         popoverVC.popoverPresentationController?.delegate = self
         popoverVC.popoverPresentationController?.sourceRect = .init(x: 20, y: 25, width: 0, height: 0)
         popoverVC.popoverPresentationController?.sourceView = btn
         popoverVC.popoverPresentationController?.permittedArrowDirections = .up
         popoverVC.popoverPresentationController?.backgroundColor = .clear
-        popoverVC.setupButtonsTitle(from: viewModel.priceDigits - viewModel.priceDigitsCount + 1)
+        popoverVC.setupButtonsTitle(from: orderVM.priceDigits - orderVM.priceDigitsCount + 1)
         
         popoverVC.didSelectDigitHandler =
         {[weak self] (index) in
@@ -122,10 +154,34 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
             if let self = self
             {
                 self.currentLoseDigit = MarketLoseDigitRange.init(rawValue: index) ?? self.currentLoseDigit
-                self.marketTableView.reloadData()
+                self.orderTableView.reloadData()
             }
         }
         
         present(popoverVC, animated: true, completion: nil)
+    }
+    
+    private func getCurrentOrder(isAsk: Bool) -> [Order]
+    {
+        var currentAskOrders = [Order]()
+        var currentBidOrders = [Order]()
+        
+        switch currentLoseDigit
+        {
+            case .noLose:
+                currentAskOrders = orderVM.askOrders
+                currentBidOrders = orderVM.bidOrders
+            case .oneLose:
+                currentAskOrders = orderVM.askOrdersLose1
+                currentBidOrders = orderVM.bidOrdersLose1
+            case .twoLose:
+                currentAskOrders = orderVM.askOrdersLose2
+                currentBidOrders = orderVM.bidOrdersLose2
+            case .threeLose:
+                currentAskOrders = orderVM.askOrdersLose3
+                currentBidOrders = orderVM.bidOrdersLose3
+        }
+        
+        return isAsk ? currentAskOrders : currentBidOrders
     }
 }

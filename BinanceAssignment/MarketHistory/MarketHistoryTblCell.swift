@@ -55,7 +55,7 @@ class MarketHistoryTblCell: BATableViewCell
     
     func updateUI(history: MarketHistory)
     {
-        time.text = "\(history.tradeTime)"
+        time.text = "\(history.eventTime)"
         price.text = history.price
         quantity.text = history.quantity
         price.textColor = history.isBuyer ? UIColor.orderTextGreen : UIColor.orderTextRed

@@ -12,6 +12,7 @@ import Starscream
 struct SocketUrl
 {
     static let orderBook = "wss://stream.binance.com:9443/ws/\(symbol.lowercased())@depth"
+    static let history = "wss://stream.binance.com:9443/ws/\(symbol.lowercased())@aggTrade"
 }
 
 class WebSocketManager: BABassClass, WebSocketDelegate

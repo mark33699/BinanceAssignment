@@ -8,11 +8,10 @@
 
 import UIKit
 
-let maxDisplayOrderCount = 15
 let zeroString = "0.00000000"
 let maxDigits = 8
 
-class MarketViewModel: BABassClass
+class MarketOrderViewModel: BABassClass
 {
     var completionHandler: (() -> Void)! = {}
     

@@ -20,13 +20,14 @@
 		C2074C8F15D0EA51E660FC42 /* Pods_BinanceAssignment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8750B18BD463272361A7C72F /* Pods_BinanceAssignment.framework */; };
 		DA18016723A23E1000A23F47 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA18016623A23E1000A23F47 /* ApiManager.swift */; };
 		DA18016923A241D400A23F47 /* OrderBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA18016823A241D400A23F47 /* OrderBookModel.swift */; };
-		DA18016B23A2423300A23F47 /* MarketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA18016A23A2423300A23F47 /* MarketViewModel.swift */; };
+		DA18016B23A2423300A23F47 /* MarketOrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA18016A23A2423300A23F47 /* MarketOrderViewModel.swift */; };
 		DA18016D23A3958300A23F47 /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA18016C23A3958300A23F47 /* Array+Ext.swift */; };
 		DA19EC5F23A09BF500C51635 /* BinanceAssignmentBaseClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA19EC5E23A09BF500C51635 /* BinanceAssignmentBaseClass.swift */; };
 		DA19EC6123A09CFA00C51635 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA19EC6023A09CFA00C51635 /* WebSocketManager.swift */; };
 		DA1C983E23A72F270097FAE7 /* DigitSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1C983D23A72F270097FAE7 /* DigitSelectViewController.swift */; };
 		DA1C984123A7821A0097FAE7 /* MarketHistoryTblCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1C984023A7821A0097FAE7 /* MarketHistoryTblCell.swift */; };
 		DA1C984423A785650097FAE7 /* MarketHistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1C984323A785650097FAE7 /* MarketHistoryModel.swift */; };
+		DA1C984623A78DA60097FAE7 /* MarketHistroyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1C984523A78DA60097FAE7 /* MarketHistroyViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,13 +48,14 @@
 		8750B18BD463272361A7C72F /* Pods_BinanceAssignment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BinanceAssignment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA18016623A23E1000A23F47 /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		DA18016823A241D400A23F47 /* OrderBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderBookModel.swift; sourceTree = "<group>"; };
-		DA18016A23A2423300A23F47 /* MarketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketViewModel.swift; sourceTree = "<group>"; };
+		DA18016A23A2423300A23F47 /* MarketOrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketOrderViewModel.swift; sourceTree = "<group>"; };
 		DA18016C23A3958300A23F47 /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
 		DA19EC5E23A09BF500C51635 /* BinanceAssignmentBaseClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinanceAssignmentBaseClass.swift; sourceTree = "<group>"; };
 		DA19EC6023A09CFA00C51635 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		DA1C983D23A72F270097FAE7 /* DigitSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitSelectViewController.swift; sourceTree = "<group>"; };
 		DA1C984023A7821A0097FAE7 /* MarketHistoryTblCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketHistoryTblCell.swift; sourceTree = "<group>"; };
 		DA1C984323A785650097FAE7 /* MarketHistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketHistoryModel.swift; sourceTree = "<group>"; };
+		DA1C984523A78DA60097FAE7 /* MarketHistroyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketHistroyViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +99,8 @@
 				0D6F18AA239FF58500DBA30E /* AppDelegate.swift */,
 				DA19EC5E23A09BF500C51635 /* BinanceAssignmentBaseClass.swift */,
 				0D6F18AC239FF58500DBA30E /* MarketViewController.swift */,
-				DA18016A23A2423300A23F47 /* MarketViewModel.swift */,
+				DA18016A23A2423300A23F47 /* MarketOrderViewModel.swift */,
+				DA1C984523A78DA60097FAE7 /* MarketHistroyViewModel.swift */,
 			);
 			path = BinanceAssignment;
 			sourceTree = "<group>";
@@ -287,11 +290,12 @@
 			files = (
 				0D6F18AD239FF58500DBA30E /* MarketViewController.swift in Sources */,
 				DA18016923A241D400A23F47 /* OrderBookModel.swift in Sources */,
+				DA1C984623A78DA60097FAE7 /* MarketHistroyViewModel.swift in Sources */,
 				DA1C983E23A72F270097FAE7 /* DigitSelectViewController.swift in Sources */,
 				0D2C225B23A68A150082F18F /* Double+Ext.swift in Sources */,
 				0D5AAE8923A6A20F00C8AD06 /* OrderBookHeader.swift in Sources */,
 				0DFDA3F823A29B6400E94E29 /* OrderBookTblCell.swift in Sources */,
-				DA18016B23A2423300A23F47 /* MarketViewModel.swift in Sources */,
+				DA18016B23A2423300A23F47 /* MarketOrderViewModel.swift in Sources */,
 				0D6F18AB239FF58500DBA30E /* AppDelegate.swift in Sources */,
 				0D81058823A54639009F2890 /* ExchangeInfoModel.swift in Sources */,
 				DA18016723A23E1000A23F47 /* ApiManager.swift in Sources */,
