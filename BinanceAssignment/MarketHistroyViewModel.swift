@@ -18,6 +18,8 @@ class MarketHistroyViewModel: BABassClass
     {
         super.init()
         
+        requestMarketHistory()
+        
         socketManager.didReceiveMessageHandler =
         {[weak self] jsonString -> () in
             
@@ -38,6 +40,33 @@ class MarketHistroyViewModel: BABassClass
                 {
                     print("MarketHistoryDecoder Error")
                 }
+            }
+        }
+    }
+
+    private func requestMarketHistory()
+    {
+        ApiManager.apiRequest(with: ApiUrl.history, objectType: [MarketHistory].self)
+        { (result) in
+            
+            switch result
+            {
+            case .success(let historys):
+                
+                self.historys.insert(contentsOf: historys.reversed(), at: 0)
+
+                if self.historys.count > maxDisplayHistoryCount
+                {
+                    self.historys = Array(self.historys[0..<maxDisplayHistoryCount])
+                }
+                
+                DispatchQueue.main.async
+                {
+                    self.completionHandler()
+                }
+                
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

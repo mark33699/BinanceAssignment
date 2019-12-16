@@ -10,12 +10,14 @@ import Foundation
 
 struct MarketHistory: Codable
 {
+    let time: Int
     let price: String
     let quantity: String
     let isBuyer: Bool
 
     enum CodingKeys: String, CodingKey
     {
+        case time = "T"
         case price = "p"
         case quantity = "q"
         case isBuyer = "m"

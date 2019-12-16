@@ -9,8 +9,8 @@
 import UIKit
 import SnapKit
 
-let symbol = "BNBBTC"
-//let symbol = "LINKBTC"
+//let symbol = "BNBBTC"
+let symbol = "LINKBTC"
 let maxDisplayOrderCount = 15
 let maxDisplayHistoryCount = 15
 
@@ -110,7 +110,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(MarketHistoryTblCell.self)", for: indexPath) as? MarketHistoryTblCell
             {
-                cell.updateUI(history: historyVM.historys[safe: indexPath.row] ?? MarketHistory(price: "", quantity: "", isBuyer: true))
+                cell.updateUI(history: historyVM.historys[safe: indexPath.row] ?? MarketHistory(time: 0, price: "", quantity: "", isBuyer: true))
                 return cell
             }
         }

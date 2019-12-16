@@ -58,7 +58,8 @@ class MarketHistoryTblCell: BATableViewCell
     {
         guard history.price != "" && history.quantity != "" else { return }
         
-        let date = Date()
+        let date = Date.init(timeIntervalSince1970: TimeInterval(history.time/1000))
+//        let date = Date()
         let fmt = DateFormatter()
         fmt.dateFormat = "HH:mm:ss"
         
