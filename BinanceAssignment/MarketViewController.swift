@@ -13,7 +13,7 @@ let symbol = "BNBBTC"
 //let symbol = "LINKBTC"
 let maxDisplayOrderCount = 14
 let maxDisplayHistoryCount = 14
-let segmentBarHeight: CGFloat = 40
+let segmentBarHeight: CGFloat = 50
 
 enum MarketLoseDigitRange: Int
 {
@@ -26,6 +26,10 @@ enum MarketLoseDigitRange: Int
 class MarketViewController: BABassViewController, UITableViewDataSource, UITableViewDelegate
 {
     let popoverVC = DigitSelectViewController()
+    
+    let orderLabel = UILabel()
+    let historyLabel = UILabel()
+    let segmentBarIndicator = UIView()
     
     let orderVM = MarketOrderViewModel()
     let orderTableView = BATableView()
@@ -65,11 +69,43 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
     
     private func layoutUI()
     {
+        view.addSubview(orderLabel)
+        orderLabel.text = "Order Book"
+        orderLabel.textColor = UIColor.binanceYellow
+        orderLabel.textAlignment = .center
+        orderLabel.snp.makeConstraints
+        { (maker) in
+            maker.top.left.equalTo(view.safeAreaLayoutGuide)
+            maker.width.equalTo(view.frame.width / 2)
+            maker.height.equalTo(segmentBarHeight)
+        }
+        
+        view.addSubview(historyLabel)
+        historyLabel.text = "Market History"
+        historyLabel.textColor = UIColor.gray
+        historyLabel.textAlignment = .center
+        historyLabel.snp.makeConstraints
+        { (maker) in
+            maker.top.right.equalTo(view.safeAreaLayoutGuide)
+            maker.width.height.equalTo(orderLabel)
+        }
+        
+        view.addSubview(segmentBarIndicator)
+        segmentBarIndicator.backgroundColor = UIColor.binanceYellow
+        segmentBarIndicator.snp.makeConstraints
+        { (maker) in
+            maker.height.equalTo(2)
+            maker.width.equalTo(view.frame.width / 4)
+            maker.top.equalTo(orderLabel.snp.bottom)
+            maker.centerX.equalTo(orderLabel.snp.centerX)
+        }
+        
         let scrollHeight = view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom - segmentBarHeight
         
         let scrollView = UIScrollView()
         view.addSubview(scrollView)
         scrollView.bounces = false
+        scrollView.delegate = self
         scrollView.isPagingEnabled = true
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
@@ -77,7 +113,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         scrollView.contentSize = .init(width: view.frame.width * 2, height: scrollHeight)
         scrollView.snp.makeConstraints
         { (maker) in
-            maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(segmentBarHeight)
+            maker.top.equalTo(orderLabel.snp.bottom).offset(2)
             maker.bottom.left.right.equalTo(self.view.safeAreaLayoutGuide)
         }
         
@@ -98,6 +134,34 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         historyTableView.register(MarketHistoryHeader.self, forHeaderFooterViewReuseIdentifier: "\(MarketHistoryHeader.self)")
         historyTableView.sectionHeaderHeight = 40
         historyTableView.isScrollEnabled = false
+    }
+    
+    private func moveIndicator(isLeft: Bool)
+    {
+        segmentBarIndicator.snp.removeConstraints()
+        segmentBarIndicator.snp.makeConstraints
+        { (maker) in
+            maker.height.equalTo(2)
+            maker.width.equalTo(view.frame.width / 4)
+            maker.top.equalTo(historyLabel.snp.bottom)
+            maker.centerX.equalTo(isLeft ? orderLabel.snp.centerX : historyLabel.snp.centerX)
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        if scrollView.contentOffset.x == 0
+        {
+            orderLabel.textColor = UIColor.binanceYellow
+            historyLabel.textColor = UIColor.gray
+            moveIndicator(isLeft: true)
+        }
+        else if scrollView.contentOffset.x == view.frame.width
+        {
+            orderLabel.textColor = UIColor.gray
+            historyLabel.textColor = UIColor.binanceYellow
+            moveIndicator(isLeft: false)
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int

@@ -92,7 +92,10 @@ class MarketOrderViewModel: BABassClass
                 {
                     self.quantityDigits = self.getDigits(by: minTradeAmount)
                 }
-                self.completionHandler()
+                DispatchQueue.main.async
+                {
+                    self.completionHandler()
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
