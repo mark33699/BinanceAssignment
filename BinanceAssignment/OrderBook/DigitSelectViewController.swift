@@ -22,7 +22,7 @@ class DigitSelectViewController: BABassViewController
         [digitBtn1, digitBtn2, digitBtn3, digitBtn4]
     }
     
-    var didSelectDigitHandler: ((_ selectIndex: Int) -> Void)?
+    var didSelectDigitHandler: ((_ selectIndex: Int, _ selectTitle: String) -> Void)?
     
     override func viewDidLoad()
     {
@@ -62,8 +62,16 @@ class DigitSelectViewController: BABassViewController
     {
         if let handler = didSelectDigitHandler
         {
-            handler(btn.tag)
+            handler(btn.tag, btn.titleLabel?.text ?? "")
         }
-        dismiss(animated: true, completion: nil)
+        
+        dismiss(animated: true)
+        {
+            for btn: UIButton in self.buttons
+            {
+                btn.setTitleColor(.white, for: .normal)
+            }
+            btn.setTitleColor(UIColor.binanceYellow, for: .normal)
+        }
     }
 }

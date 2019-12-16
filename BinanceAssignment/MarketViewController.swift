@@ -11,8 +11,8 @@ import SnapKit
 
 let symbol = "BNBBTC"
 //let symbol = "LINKBTC"
-let maxDisplayOrderCount = 15
-let maxDisplayHistoryCount = 15
+let maxDisplayOrderCount = 14
+let maxDisplayHistoryCount = 14
 let segmentBarHeight: CGFloat = 40
 
 enum MarketLoseDigitRange: Int
@@ -25,6 +25,8 @@ enum MarketLoseDigitRange: Int
 
 class MarketViewController: BABassViewController, UITableViewDataSource, UITableViewDelegate
 {
+    let popoverVC = DigitSelectViewController()
+    
     let orderVM = MarketOrderViewModel()
     let orderTableView = BATableView()
     
@@ -32,10 +34,12 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
     let historyTableView = BATableView()
     
     var currentLoseDigit: MarketLoseDigitRange = .noLose
+    var didSelectDigit: String?
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        self.title = symbol
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -144,6 +148,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         {
             if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "\(OrderBookHeader.self)") as? OrderBookHeader
             {
+                header.digitLoseBtn.setTitle(didSelectDigit ?? "\(orderVM.priceDigits)", for: .normal)
                 header.digitLoseBtn.addTarget(self, action: #selector(digitSelect), for: .touchUpInside)
                 return header
             }
@@ -157,8 +162,6 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
     
     @objc func digitSelect(btn: UIButton)
     {
-        let popoverVC = DigitSelectViewController()
-        
         popoverVC.modalPresentationStyle = .popover
         popoverVC.preferredContentSize = CGSize(width: digitSelectMenuWidth, height: orderVM.priceDigitsCount * digitSelectButtonHeight)
         popoverVC.popoverPresentationController?.delegate = self
@@ -169,10 +172,11 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         popoverVC.setupButtonsTitle(from: orderVM.priceDigits - orderVM.priceDigitsCount + 1)
         
         popoverVC.didSelectDigitHandler =
-        {[weak self] (index) in
+        {[weak self] (index, title) in
             
             if let self = self
             {
+                self.didSelectDigit = title
                 self.currentLoseDigit = MarketLoseDigitRange.init(rawValue: index) ?? self.currentLoseDigit
                 self.orderTableView.reloadData()
             }
