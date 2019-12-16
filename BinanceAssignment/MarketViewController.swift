@@ -11,12 +11,12 @@ import SnapKit
 
 let symbol = "LINKBTC"
 
-enum MarketLoseDigitRange
+enum MarketLoseDigitRange: Int
 {
-    case noLose
-    case oneLose
+    case threeLose  = 0
     case twoLose
-    case threeLose
+    case oneLose
+    case noLose
 }
 
 class MarketViewController: BABassViewController, UITableViewDataSource, UITableViewDelegate
@@ -33,14 +33,10 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         layoutUI()
         
         viewModel.completionHandler =
-        {
-            self.marketTableView.reloadData()
+        {[weak self] in
+            
+            self?.marketTableView.reloadData()
         }
-    }
-    
-    @objc func trg(s: UISwitch)
-    {
-        currentLoseDigit = s.isOn ? .twoLose : .oneLose
     }
     
     func layoutUI()
@@ -99,6 +95,37 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
     {
-        tableView.dequeueReusableHeaderFooterView(withIdentifier: "\(OrderBookHeader.self)")
+        if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "\(OrderBookHeader.self)") as? OrderBookHeader
+        {
+            header.digitLoseBtn.addTarget(self, action: #selector(digitSelect), for: .touchUpInside)
+            return header
+        }
+        return nil
+    }
+    
+    @objc func digitSelect(btn: UIButton)
+    {
+        let popoverVC = DigitSelectViewController()
+        
+        popoverVC.modalPresentationStyle = .popover
+        popoverVC.preferredContentSize = CGSize(width: digitSelectMenuWidth, height: viewModel.priceDigitsCount * digitSelectButtonHeight)
+        popoverVC.popoverPresentationController?.delegate = self
+        popoverVC.popoverPresentationController?.sourceRect = .init(x: 20, y: 25, width: 0, height: 0)
+        popoverVC.popoverPresentationController?.sourceView = btn
+        popoverVC.popoverPresentationController?.permittedArrowDirections = .up
+        popoverVC.popoverPresentationController?.backgroundColor = .clear
+        popoverVC.setupButtonsTitle(from: viewModel.priceDigits - viewModel.priceDigitsCount + 1)
+        
+        popoverVC.didSelectDigitHandler =
+        {[weak self] (index) in
+            
+            if let self = self
+            {
+                self.currentLoseDigit = MarketLoseDigitRange.init(rawValue: index) ?? self.currentLoseDigit
+                self.marketTableView.reloadData()
+            }
+        }
+        
+        present(popoverVC, animated: true, completion: nil)
     }
 }

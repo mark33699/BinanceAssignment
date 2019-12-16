@@ -15,4 +15,6 @@ extension UIColor
     static let orderTextRed = UIColor.init(named: "OrderTextRed")
     static let orderBackgroundGreen = UIColor.init(named: "OrderBackgroundGreen")
     static let orderBackgroundRed = UIColor.init(named: "OrderBackgroundRed")
+    static let digitSelectMenu = UIColor.init(named: "DigitSelectMenu")
+    static let binanceYellow = UIColor.init(named: "BinanceYellow")
 }

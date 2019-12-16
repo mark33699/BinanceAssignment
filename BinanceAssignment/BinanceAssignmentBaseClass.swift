@@ -11,12 +11,20 @@ import UIKit
 ///BA mean BinanceAssignment, all customized class should inherit from it
 class BABassClass
 {
-    
+    deinit
+    {
+        print("\(Self.self) deinit")
+    }
 }
 
-class BABassViewController: UIViewController
+class BABassViewController: UIViewController, UIPopoverPresentationControllerDelegate
 {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle { .none }
     
+    deinit
+    {
+        print("\(Self.self) deinit")
+    }
 }
 
 class BATableViewCell: UITableViewCell

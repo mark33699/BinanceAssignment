@@ -24,6 +24,7 @@
 		DA18016D23A3958300A23F47 /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA18016C23A3958300A23F47 /* Array+Ext.swift */; };
 		DA19EC5F23A09BF500C51635 /* BinanceAssignmentBaseClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA19EC5E23A09BF500C51635 /* BinanceAssignmentBaseClass.swift */; };
 		DA19EC6123A09CFA00C51635 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA19EC6023A09CFA00C51635 /* WebSocketManager.swift */; };
+		DA1C983E23A72F270097FAE7 /* DigitSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1C983D23A72F270097FAE7 /* DigitSelectViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		DA18016C23A3958300A23F47 /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
 		DA19EC5E23A09BF500C51635 /* BinanceAssignmentBaseClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinanceAssignmentBaseClass.swift; sourceTree = "<group>"; };
 		DA19EC6023A09CFA00C51635 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
+		DA1C983D23A72F270097FAE7 /* DigitSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitSelectViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 				DA18016823A241D400A23F47 /* OrderBookModel.swift */,
 				0DFDA3F723A29B6400E94E29 /* OrderBookTblCell.swift */,
 				0D5AAE8823A6A20F00C8AD06 /* OrderBookHeader.swift */,
+				DA1C983D23A72F270097FAE7 /* DigitSelectViewController.swift */,
 			);
 			path = OrderBook;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 			files = (
 				0D6F18AD239FF58500DBA30E /* MarketViewController.swift in Sources */,
 				DA18016923A241D400A23F47 /* OrderBookModel.swift in Sources */,
+				DA1C983E23A72F270097FAE7 /* DigitSelectViewController.swift in Sources */,
 				0D2C225B23A68A150082F18F /* Double+Ext.swift in Sources */,
 				0D5AAE8923A6A20F00C8AD06 /* OrderBookHeader.swift in Sources */,
 				0DFDA3F823A29B6400E94E29 /* OrderBookTblCell.swift in Sources */,

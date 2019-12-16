@@ -29,8 +29,22 @@ class MarketViewModel: BABassClass
     var snapshotLastUpdateId = 0
     var streamLastUpdateId = 0
     
-    var priceDigits = maxDigits
     var quantityDigits = maxDigits
+    var priceDigits = maxDigits
+    var priceDigitsCount: Int
+    {
+        switch priceDigits
+        {
+        case 0:
+            return 1
+        case 1:
+            return 2
+        case 2:
+            return 3
+        default:
+            return 4
+        }
+    }
     
     override init()
     {
@@ -40,9 +54,9 @@ class MarketViewModel: BABassClass
         requestOrderBookSnapshot()
         
         socketManager.didReceiveMessageHandler =
-        { message -> () in
+        {[weak self] message -> () in
             
-            if let stream = self.jsonStringToOrderBookStream(message)
+            if let self = self, let stream = self.jsonStringToOrderBookStream(message)
             {
                 if self.streamLastUpdateId == 0 ||
                 (stream.firstUpdateID == self.streamLastUpdateId + 1)
