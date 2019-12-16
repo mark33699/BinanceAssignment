@@ -192,8 +192,9 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
                               qtyDigit: orderVM.quantityDigits,
                               priceDigit: orderVM.priceDigits)
                 
-    //            let p: CGFloat = CGFloat(indexPath.row + 1) / CGFloat(2000)
-    //            cell.updateBackgroundProportion(green: p, red: p)
+                //I don't know real rule, But I will do it
+                cell.updateBackgroundProportion(green: calculateProportion(currentQty: bo.quantity, isAsk: false),
+                                                red: calculateProportion(currentQty: ao.quantity, isAsk: true))
                 
                 return cell
             }
@@ -275,5 +276,18 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         }
         
         return isAsk ? currentAskOrders : currentBidOrders
+    }
+    
+    private func calculateProportion(currentQty: String ,isAsk: Bool) -> CGFloat
+    {
+        if currentQty == "" { return 0 }
+        
+        let currntOrders = getCurrentOrder(isAsk: isAsk)
+        let topCount = min(currntOrders.count, maxDisplayOrderCount)
+        let topOrders = Array(currntOrders[0..<topCount]).map{ Double($0.quantity) }
+        let sum = topOrders.reduce(0.0){ $0 + ($1 ?? 0.0) }
+        let qty = Double(currentQty) ?? 0.0
+        let p = qty / sum
+        return CGFloat(p / 2)
     }
 }
