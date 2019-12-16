@@ -9,10 +9,11 @@
 import UIKit
 import SnapKit
 
-//let symbol = "BNBBTC"
-let symbol = "LINKBTC"
+let symbol = "BNBBTC"
+//let symbol = "LINKBTC"
 let maxDisplayOrderCount = 15
 let maxDisplayHistoryCount = 15
+let segmentBarHeight: CGFloat = 40
 
 enum MarketLoseDigitRange: Int
 {
@@ -35,13 +36,22 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
     override func viewDidLoad()
     {
         super.viewDidLoad()
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
         
         layoutUI()
-        
-//        orderVM.completionHandler =
-//        {[weak self] in
-//            self?.orderTableView.reloadData()
-//        }
+        dataBinding()
+    }
+    
+    func dataBinding()
+    {
+        orderVM.completionHandler =
+        {[weak self] in
+            self?.orderTableView.reloadData()
+        }
         
         historyVM.completionHandler =
         {[weak self] in
@@ -51,29 +61,39 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
     
     private func layoutUI()
     {
-//        view.addSubview(orderTableView)
-//        orderTableView.dataSource = self
-//        orderTableView.delegate = self
-//        orderTableView.register(OrderBookTblCell.self, forCellReuseIdentifier: "\(OrderBookTblCell.self)")
-//        orderTableView.register(OrderBookHeader.self, forHeaderFooterViewReuseIdentifier: "\(OrderBookHeader.self)")
-//        orderTableView.sectionHeaderHeight = 40
-//        orderTableView.snp.makeConstraints
-//        { (maker) in
-//            maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(40)
-//            maker.bottom.left.right.equalTo(self.view.safeAreaLayoutGuide)
-//        }
+        let scrollHeight = view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom - segmentBarHeight
         
-        view.addSubview(historyTableView)
+        let scrollView = UIScrollView()
+        view.addSubview(scrollView)
+        scrollView.bounces = false
+        scrollView.isPagingEnabled = true
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.backgroundColor = UIColor.generalBackground
+        scrollView.contentSize = .init(width: view.frame.width * 2, height: scrollHeight)
+        scrollView.snp.makeConstraints
+        { (maker) in
+            maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(segmentBarHeight)
+            maker.bottom.left.right.equalTo(self.view.safeAreaLayoutGuide)
+        }
+        
+        orderTableView.frame = .init(x: 0, y: 0, width: view.frame.width, height: scrollHeight)
+        scrollView.addSubview(orderTableView)
+        orderTableView.dataSource = self
+        orderTableView.delegate = self
+        orderTableView.register(OrderBookTblCell.self, forCellReuseIdentifier: "\(OrderBookTblCell.self)")
+        orderTableView.register(OrderBookHeader.self, forHeaderFooterViewReuseIdentifier: "\(OrderBookHeader.self)")
+        orderTableView.sectionHeaderHeight = 40
+        orderTableView.isScrollEnabled = false
+        
+        historyTableView.frame = .init(x: view.frame.width, y: 0, width: view.frame.width, height: scrollHeight)
+        scrollView.addSubview(historyTableView)
         historyTableView.dataSource = self
         historyTableView.delegate = self
         historyTableView.register(MarketHistoryTblCell.self, forCellReuseIdentifier: "\(MarketHistoryTblCell.self)")
-//        historyTableView.register(OrderBookHeader.self, forHeaderFooterViewReuseIdentifier: "\(OrderBookHeader.self)")
+        historyTableView.register(MarketHistoryHeader.self, forHeaderFooterViewReuseIdentifier: "\(MarketHistoryHeader.self)")
         historyTableView.sectionHeaderHeight = 40
-        historyTableView.snp.makeConstraints
-        { (maker) in
-            maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(40)
-            maker.bottom.left.right.equalTo(self.view.safeAreaLayoutGuide)
-        }
+        historyTableView.isScrollEnabled = false
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -130,7 +150,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         }
         else if tableView == historyTableView
         {
-            
+            return tableView.dequeueReusableHeaderFooterView(withIdentifier: "\(MarketHistoryHeader.self)")
         }
         return nil
     }
