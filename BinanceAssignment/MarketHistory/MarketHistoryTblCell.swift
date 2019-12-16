@@ -28,8 +28,11 @@ class MarketHistoryTblCell: BATableViewCell
     
     func layoutUI()
     {
+        let font = UIFont.boldSystemFont(ofSize: 13)
+        
         contentView.addSubview(time)
         time.textColor = .white
+        time.font = font
         time.snp.makeConstraints
         { (maker) in
             maker.bottom.top.left.equalToSuperview()
@@ -37,6 +40,7 @@ class MarketHistoryTblCell: BATableViewCell
         }
         
         contentView.addSubview(price)
+        price.font = font
         price.snp.makeConstraints
         { (maker) in
             maker.bottom.top.equalToSuperview()
@@ -46,6 +50,7 @@ class MarketHistoryTblCell: BATableViewCell
         
         contentView.addSubview(quantity)
         quantity.textColor = .white
+        quantity.font = font
         quantity.textAlignment = .right
         quantity.snp.makeConstraints
         { (maker) in

@@ -11,6 +11,7 @@ import SnapKit
 
 let symbol = "BNBBTC"
 //let symbol = "LINKBTC"
+//let symbol = "ETHUSDT"
 let maxDisplayOrderCount = 14
 let maxDisplayHistoryCount = 14
 let segmentBarHeight: CGFloat = 50
@@ -186,7 +187,10 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
                 let bo = getCurrentOrder(isAsk: false)[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
                 let ao = getCurrentOrder(isAsk: true)[safe: indexPath.row] ?? Order(priceLevel: "", quantity: "")
                 
-                cell.updateUI(bidOrder: bo, askOrder: ao, qtyDigit: orderVM.quantityDigits)
+                cell.updateUI(bidOrder: bo,
+                              askOrder: ao,
+                              qtyDigit: orderVM.quantityDigits,
+                              priceDigit: orderVM.priceDigits)
                 
     //            let p: CGFloat = CGFloat(indexPath.row + 1) / CGFloat(2000)
     //            cell.updateBackgroundProportion(green: p, red: p)

@@ -22,4 +22,10 @@ extension Double
             return Double(ceil(self * numberOfDigits)) / numberOfDigits
         }
     }
+    
+    func rounding(toDecimal decimal: Int) -> Double
+    {
+        let numberOfDigits = pow(10.0, Double(decimal))
+        return (self * numberOfDigits).rounded(.toNearestOrAwayFromZero) / numberOfDigits
+    }
 }

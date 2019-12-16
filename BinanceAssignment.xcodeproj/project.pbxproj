@@ -17,6 +17,7 @@
 		0D81058623A2AD1C009F2890 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D81058523A2AD1C009F2890 /* UIColor+Ext.swift */; };
 		0D81058823A54639009F2890 /* ExchangeInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D81058723A54639009F2890 /* ExchangeInfoModel.swift */; };
 		0DA5BD2623A7DAC7007BB44D /* MarketHistoryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA5BD2523A7DAC7007BB44D /* MarketHistoryHeader.swift */; };
+		0DA5BD2823A8089D007BB44D /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA5BD2723A8089D007BB44D /* String+Ext.swift */; };
 		0DFDA3F823A29B6400E94E29 /* OrderBookTblCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFDA3F723A29B6400E94E29 /* OrderBookTblCell.swift */; };
 		C2074C8F15D0EA51E660FC42 /* Pods_BinanceAssignment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8750B18BD463272361A7C72F /* Pods_BinanceAssignment.framework */; };
 		DA18016723A23E1000A23F47 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA18016623A23E1000A23F47 /* ApiManager.swift */; };
@@ -45,6 +46,7 @@
 		0D81058523A2AD1C009F2890 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		0D81058723A54639009F2890 /* ExchangeInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeInfoModel.swift; sourceTree = "<group>"; };
 		0DA5BD2523A7DAC7007BB44D /* MarketHistoryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketHistoryHeader.swift; sourceTree = "<group>"; };
+		0DA5BD2723A8089D007BB44D /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		0DFDA3F723A29B6400E94E29 /* OrderBookTblCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderBookTblCell.swift; sourceTree = "<group>"; };
 		845918F65961341F9C08DA24 /* Pods-BinanceAssignment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BinanceAssignment.debug.xcconfig"; path = "Target Support Files/Pods-BinanceAssignment/Pods-BinanceAssignment.debug.xcconfig"; sourceTree = "<group>"; };
 		8750B18BD463272361A7C72F /* Pods_BinanceAssignment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BinanceAssignment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,6 +143,7 @@
 				0D81058523A2AD1C009F2890 /* UIColor+Ext.swift */,
 				DA18016C23A3958300A23F47 /* Array+Ext.swift */,
 				0D2C225A23A68A150082F18F /* Double+Ext.swift */,
+				0DA5BD2723A8089D007BB44D /* String+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				DA18016723A23E1000A23F47 /* ApiManager.swift in Sources */,
 				DA1C984423A785650097FAE7 /* MarketHistoryModel.swift in Sources */,
 				0D81058623A2AD1C009F2890 /* UIColor+Ext.swift in Sources */,
+				0DA5BD2823A8089D007BB44D /* String+Ext.swift in Sources */,
 				DA1C984123A7821A0097FAE7 /* MarketHistoryTblCell.swift in Sources */,
 				DA18016D23A3958300A23F47 /* Array+Ext.swift in Sources */,
 				DA19EC5F23A09BF500C51635 /* BinanceAssignmentBaseClass.swift in Sources */,

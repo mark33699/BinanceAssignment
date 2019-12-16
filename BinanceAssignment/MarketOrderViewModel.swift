@@ -8,7 +8,7 @@
 
 import UIKit
 
-let zeroString = "0.00000000"
+//let zeroString = "0.00000000"
 let maxDigits = 8
 
 class MarketOrderViewModel: BABassClass
@@ -50,8 +50,10 @@ class MarketOrderViewModel: BABassClass
         super.init()
         
         requestExchangeInfo()
-        requestOrderBookSnapshot()
-        
+    }
+    
+    private func socketBinding()
+    {
         socketManager.didReceiveMessageHandler =
         {[weak self] message -> () in
             
@@ -92,6 +94,10 @@ class MarketOrderViewModel: BABassClass
                 {
                     self.quantityDigits = self.getDigits(by: minTradeAmount)
                 }
+                
+                self.requestOrderBookSnapshot()
+                self.socketBinding()
+                
                 DispatchQueue.main.async
                 {
                     self.completionHandler()
@@ -111,8 +117,18 @@ class MarketOrderViewModel: BABassClass
             {
             case .success(let snapshot):
                 self.snapshotLastUpdateId = snapshot.lastUpdateId
-                self.askOrders = self.stringArrayToOrderArray(snapshot.asks).filter { $0.quantity != zeroString }
-                self.bidOrders = self.stringArrayToOrderArray(snapshot.bids).filter { $0.quantity != zeroString }
+                self.askOrders = self.stringArrayToOrderArray(snapshot.asks).filter { Double($0.quantity) != 0 }
+                self.bidOrders = self.stringArrayToOrderArray(snapshot.bids).filter { Double($0.quantity) != 0 }
+                self.askOrders = self.askOrders.map
+                {
+                    Order(priceLevel: $0.priceLevel.substring(cut: maxDigits - self.priceDigits),
+                          quantity: $0.quantity.substring(cut: maxDigits - self.quantityDigits))
+                }
+                self.bidOrders = self.bidOrders.map
+                {
+                    Order(priceLevel: $0.priceLevel.substring(cut: maxDigits - self.priceDigits),
+                          quantity: $0.quantity.substring(cut: maxDigits - self.quantityDigits))
+                }
 
 //                print("snapshot asks\n\(self.askOrders)")
                 
@@ -161,7 +177,7 @@ class MarketOrderViewModel: BABassClass
                 {
                     if newOrder.priceLevel == originOrder.priceLevel
                     {
-                        if newOrder.quantity == zeroString
+                        if Double(newOrder.quantity) == 0
                         {
                             originOrders.remove(at: offset)
                         }
@@ -182,7 +198,7 @@ class MarketOrderViewModel: BABassClass
                 }
                 
                 //insert
-                if isSamePrice == false && newOrder.quantity != zeroString
+                if isSamePrice == false && Double(newOrder.quantity) != 0
                 {
                     originOrders.insert(newOrder, at: newIndex)
                 }
@@ -289,7 +305,12 @@ class MarketOrderViewModel: BABassClass
     
     private func stringArrayToOrderArray(_ array: [[String]]) -> [Order]
     {
-        array.map{ Order(priceLevel: $0.first!, quantity: $0.last!) }
+//        array.map{ Order(priceLevel: $0.first!, quantity: $0.last!) }
+        array.map
+        {
+            Order(priceLevel: $0.first!.substring(cut: maxDigits - priceDigits),
+                  quantity: $0.last!.substring(cut: maxDigits - quantityDigits))
+        }
     }
     
     private func jsonStringToOrderBookStream(_ jsonString: String) -> OrderBookStream?
