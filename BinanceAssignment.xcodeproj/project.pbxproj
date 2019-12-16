@@ -84,19 +84,13 @@
 			isa = PBXGroup;
 			children = (
 				DA19EC5D23A09AE800C51635 /* Support Files */,
+				DA1C983B23A72D520097FAE7 /* Manager */,
+				DA1C983A23A72CFA0097FAE7 /* Extension */,
+				DA1C983C23A72DAB0097FAE7 /* OrderBook */,
 				0D6F18AA239FF58500DBA30E /* AppDelegate.swift */,
+				DA19EC5E23A09BF500C51635 /* BinanceAssignmentBaseClass.swift */,
 				0D6F18AC239FF58500DBA30E /* MarketViewController.swift */,
 				DA18016A23A2423300A23F47 /* MarketViewModel.swift */,
-				DA19EC5E23A09BF500C51635 /* BinanceAssignmentBaseClass.swift */,
-				DA19EC6023A09CFA00C51635 /* WebSocketManager.swift */,
-				DA18016623A23E1000A23F47 /* ApiManager.swift */,
-				DA18016823A241D400A23F47 /* OrderBookModel.swift */,
-				0DFDA3F723A29B6400E94E29 /* OrderBookTblCell.swift */,
-				0D81058523A2AD1C009F2890 /* UIColor+Ext.swift */,
-				DA18016C23A3958300A23F47 /* Array+Ext.swift */,
-				0D81058723A54639009F2890 /* ExchangeInfoModel.swift */,
-				0D2C225A23A68A150082F18F /* Double+Ext.swift */,
-				0D5AAE8823A6A20F00C8AD06 /* OrderBookHeader.swift */,
 			);
 			path = BinanceAssignment;
 			sourceTree = "<group>";
@@ -127,6 +121,36 @@
 				0D6F18B6239FF58800DBA30E /* Info.plist */,
 			);
 			path = "Support Files";
+			sourceTree = "<group>";
+		};
+		DA1C983A23A72CFA0097FAE7 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				0D81058523A2AD1C009F2890 /* UIColor+Ext.swift */,
+				DA18016C23A3958300A23F47 /* Array+Ext.swift */,
+				0D2C225A23A68A150082F18F /* Double+Ext.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		DA1C983B23A72D520097FAE7 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				DA19EC6023A09CFA00C51635 /* WebSocketManager.swift */,
+				DA18016623A23E1000A23F47 /* ApiManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		DA1C983C23A72DAB0097FAE7 /* OrderBook */ = {
+			isa = PBXGroup;
+			children = (
+				0D81058723A54639009F2890 /* ExchangeInfoModel.swift */,
+				DA18016823A241D400A23F47 /* OrderBookModel.swift */,
+				0DFDA3F723A29B6400E94E29 /* OrderBookTblCell.swift */,
+				0D5AAE8823A6A20F00C8AD06 /* OrderBookHeader.swift */,
+			);
+			path = OrderBook;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
