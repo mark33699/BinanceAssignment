@@ -21,8 +21,6 @@ class MarketHistroyViewModel: BABassClass
         socketManager.didReceiveMessageHandler =
         {[weak self] jsonString -> () in
             
-            print(jsonString)
-            
             if let self = self
             {
                 do

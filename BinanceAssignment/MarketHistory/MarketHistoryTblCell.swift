@@ -46,6 +46,7 @@ class MarketHistoryTblCell: BATableViewCell
         
         contentView.addSubview(quantity)
         quantity.textColor = .white
+        quantity.textAlignment = .right
         quantity.snp.makeConstraints
         { (maker) in
             maker.bottom.top.right.equalToSuperview()
@@ -55,9 +56,15 @@ class MarketHistoryTblCell: BATableViewCell
     
     func updateUI(history: MarketHistory)
     {
-        time.text = "\(history.eventTime)"
+        guard history.price != "" && history.quantity != "" else { return }
+        
+        let date = Date()
+        let fmt = DateFormatter()
+        fmt.dateFormat = "HH:mm:ss"
+        
+        time.text = fmt.string(from: date)
         price.text = history.price
         quantity.text = history.quantity
-        price.textColor = history.isBuyer ? UIColor.orderTextGreen : UIColor.orderTextRed
+        price.textColor = history.isBuyer ? UIColor.orderTextRed : UIColor.orderTextGreen
     }
 }

@@ -110,7 +110,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(MarketHistoryTblCell.self)", for: indexPath) as? MarketHistoryTblCell
             {
-                cell.updateUI(history: historyVM.historys[safe: indexPath.row] ?? MarketHistory(eventTime: 0, price: "", quantity: "", isBuyer: true))
+                cell.updateUI(history: historyVM.historys[safe: indexPath.row] ?? MarketHistory(price: "", quantity: "", isBuyer: true))
                 return cell
             }
         }
