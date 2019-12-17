@@ -41,6 +41,8 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
     var currentLoseDigit: MarketLoseDigitRange = .noLose
     var didSelectDigit: String?
     
+    var shouldLayout = true
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -51,8 +53,13 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
     {
         super.viewDidAppear(animated)
         
-        layoutUI()
-        dataBinding()
+        if shouldLayout
+        {
+            shouldLayout = false
+            
+            layoutUI()
+            dataBinding()
+        }
     }
     
     func dataBinding()
