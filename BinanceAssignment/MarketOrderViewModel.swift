@@ -59,9 +59,11 @@ class MarketOrderViewModel: BABassClass
             
             if let self = self, let stream = self.jsonStringToOrderBookStream(message)
             {
+                //While listening to the stream, each new event's U should be equal to the previous event's u+1.
                 if self.streamLastUpdateId == 0 ||
                 (stream.firstUpdateID == self.streamLastUpdateId + 1)
                 {
+                    //Drop any event where u is <= lastUpdateId in the snapshot.
                     if self.snapshotLastUpdateId != 0 &&
                        stream.lastUpdateID >= self.snapshotLastUpdateId + 1
                     {
@@ -70,7 +72,7 @@ class MarketOrderViewModel: BABassClass
                 }
                 else
                 {
-//                    print("lose packet: \(self.streamLastUpdateId), \(stream.firstUpdateID)")
+                    //若網路短暫中斷，數據還能夠恢復
                     self.requestOrderBookSnapshot()
                 }
                 self.streamLastUpdateId = stream.lastUpdateID
@@ -78,6 +80,7 @@ class MarketOrderViewModel: BABassClass
         }
     }
     
+    //MARK:- api
     private func requestExchangeInfo()
     {
         ApiManager.apiRequest(with: ApiUrl.exchangeInfo, objectType: ExchangeInfo.self)
@@ -117,8 +120,12 @@ class MarketOrderViewModel: BABassClass
             {
             case .success(let snapshot):
                 self.snapshotLastUpdateId = snapshot.lastUpdateId
+                
+                //delete zero data
                 self.askOrders = self.stringArrayToOrderArray(snapshot.asks).filter { Double($0.quantity) != 0 }
                 self.bidOrders = self.stringArrayToOrderArray(snapshot.bids).filter { Double($0.quantity) != 0 }
+                
+                //cut zero
                 self.askOrders = self.askOrders.map
                 {
                     Order(priceLevel: $0.priceLevel.substring(cut: maxDigits - self.priceDigits),
@@ -129,8 +136,6 @@ class MarketOrderViewModel: BABassClass
                     Order(priceLevel: $0.priceLevel.substring(cut: maxDigits - self.priceDigits),
                           quantity: $0.quantity.substring(cut: maxDigits - self.quantityDigits))
                 }
-
-//                print("snapshot asks\n\(self.askOrders)")
                 
                 self.sumAllOrderBook()
                 
@@ -145,21 +150,22 @@ class MarketOrderViewModel: BABassClass
         }
     }
     
+    //MARK:- value process
+    ///updata both array
     private func updateOrderBook(_ stream: OrderBookStream)
     {
         let newAsks = self.stringArrayToOrderArray(stream.asks)
         let newBids = self.stringArrayToOrderArray(stream.bids)
         
-//        print("stream asks\n\(newAsks)")
         updateOrder(newOrders: newAsks, originOrders: &askOrders, isAsk: true)
         updateOrder(newOrders: newBids, originOrders: &bidOrders, isAsk: false)
-//        print("updated asks\n\(self.askOrders)")
         
         sumAllOrderBook()
         
         self.completionHandler()
     }
     
+    ///updata one array
     private func updateOrder(newOrders: [Order],
                              originOrders: inout [Order],
                              isAsk: Bool)
@@ -179,16 +185,19 @@ class MarketOrderViewModel: BABassClass
                     {
                         if Double(newOrder.quantity) == 0
                         {
+                            //if the quantity is 0, remove the price level.
                             originOrders.remove(at: offset)
                         }
                         else
                         {
+                            //The data in each event is the absolute quantity for a price level.
                             originOrders[offset] = newOrder
                         }
                         isSamePrice = true
                         break
                     }
                     
+                    //keep for insert
                     if (isAsk && newOrder.priceLevel < originOrder.priceLevel)
                     || (!isAsk && newOrder.priceLevel > originOrder.priceLevel)
                     {
@@ -212,34 +221,30 @@ class MarketOrderViewModel: BABassClass
         {
         case 0:
             print("no need sum")
-            
         case 1:
             self.askOrdersLose1 = self.sumOrderBook(self.askOrders, isAsk: true)
             self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders, isAsk: false)
-            
         case 2:
             self.askOrdersLose1 = self.sumOrderBook(self.askOrders, isAsk: true)
             self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders, isAsk: false)
             self.askOrdersLose2 = self.sumOrderBook(self.askOrdersLose1, isAsk: true)
             self.bidOrdersLose2 = self.sumOrderBook(self.bidOrdersLose1, isAsk: false)
-            
         default:
-//            print("加前\(self.askOrders)")
             self.askOrdersLose1 = self.sumOrderBook(self.askOrders, isAsk: true)
             self.bidOrdersLose1 = self.sumOrderBook(self.bidOrders, isAsk: false)
             self.askOrdersLose2 = self.sumOrderBook(self.askOrdersLose1, isAsk: true)
             self.bidOrdersLose2 = self.sumOrderBook(self.bidOrdersLose1, isAsk: false)
             self.askOrdersLose3 = self.sumOrderBook(self.askOrdersLose2, isAsk: true)
             self.bidOrdersLose3 = self.sumOrderBook(self.bidOrdersLose2, isAsk: false)
-//            print("加後\(self.askOrdersLose1)")
         }
     }
     
     private func sumOrderBook(_ orders: [Order],
                               isAsk: Bool) -> [Order]
     {
+        //Step1. lose digit
         let loseDigitOrderBook = isAsk ?
-        orders.map
+        orders.map //ask should ceiling
         { (order) -> Order in
             
             if order.priceLevel.last == "0"
@@ -260,16 +265,18 @@ class MarketOrderViewModel: BABassClass
                 return Order(priceLevel: newPrice, quantity: order.quantity)
             }
         } :
-        orders.map
+        orders.map //bid just cut
         { (order) -> Order in
 
             return Order(priceLevel: self.getSubStringToSecondLast(order.priceLevel),
                          quantity: order.quantity)
         }
         
+        //Step2. sum same price
         var sumOrderBook = [Order]()
         for order: Order in loseDigitOrderBook
         {
+            //sum or append
             if sumOrderBook.count == 0
             {
                 sumOrderBook.append(order)
@@ -296,6 +303,7 @@ class MarketOrderViewModel: BABassClass
         return sumOrderBook
     }
     
+    //MARK:- instance func
     private func getSubStringToSecondLast(_ str: String) -> String
     {
         let end = str.index(str.endIndex, offsetBy: -1)
@@ -305,7 +313,6 @@ class MarketOrderViewModel: BABassClass
     
     private func stringArrayToOrderArray(_ array: [[String]]) -> [Order]
     {
-//        array.map{ Order(priceLevel: $0.first!, quantity: $0.last!) }
         array.map
         {
             Order(priceLevel: $0.first!.substring(cut: maxDigits - priceDigits),

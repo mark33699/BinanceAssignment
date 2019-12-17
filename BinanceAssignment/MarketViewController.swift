@@ -77,6 +77,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
     
     private func layoutUI()
     {
+        //MARK:- segmentBarUI
         view.addSubview(orderLabel)
         orderLabel.text = "Order Book"
         orderLabel.textColor = UIColor.binanceYellow
@@ -108,6 +109,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
             maker.centerX.equalTo(orderLabel.snp.centerX)
         }
         
+        //MARK:- scrollViewUI
         let scrollHeight = view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom - segmentBarHeight
         
         let scrollView = UIScrollView()
@@ -131,8 +133,6 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         orderTableView.delegate = self
         orderTableView.register(OrderBookTblCell.self, forCellReuseIdentifier: "\(OrderBookTblCell.self)")
         orderTableView.register(OrderBookHeader.self, forHeaderFooterViewReuseIdentifier: "\(OrderBookHeader.self)")
-        orderTableView.sectionHeaderHeight = 40
-        orderTableView.isScrollEnabled = false
         
         historyTableView.frame = .init(x: view.frame.width, y: 0, width: view.frame.width, height: scrollHeight)
         scrollView.addSubview(historyTableView)
@@ -140,8 +140,6 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         historyTableView.delegate = self
         historyTableView.register(MarketHistoryTblCell.self, forCellReuseIdentifier: "\(MarketHistoryTblCell.self)")
         historyTableView.register(MarketHistoryHeader.self, forHeaderFooterViewReuseIdentifier: "\(MarketHistoryHeader.self)")
-        historyTableView.sectionHeaderHeight = 40
-        historyTableView.isScrollEnabled = false
     }
     
     private func moveIndicator(isLeft: Bool)
@@ -155,7 +153,8 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
             maker.centerX.equalTo(isLeft ? orderLabel.snp.centerX : historyLabel.snp.centerX)
         }
     }
-    
+
+    //MARK:- delegate func
     func scrollViewDidScroll(_ scrollView: UIScrollView)
     {
         if scrollView.contentOffset.x == 0
@@ -235,7 +234,8 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         }
         return nil
     }
-    
+
+    //MARK:- selector
     @objc func digitSelect(btn: UIButton)
     {
         popoverVC.modalPresentationStyle = .popover
@@ -261,6 +261,7 @@ class MarketViewController: BABassViewController, UITableViewDataSource, UITable
         present(popoverVC, animated: true, completion: nil)
     }
     
+    //MARK:- instance func
     private func getCurrentOrder(isAsk: Bool) -> [Order]
     {
         var currentAskOrders = [Order]()

@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     }
 }
 
+//convenient for test, fast refeash
 class RootViewController: UIViewController
 {
     override func viewDidAppear(_ animated: Bool)

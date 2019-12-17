@@ -32,7 +32,7 @@ class MarketHistroyViewModel: BABassClass
                     
                     if self.historys.count > maxDisplayHistoryCount
                     {
-                        self.historys.popLast()
+                       let _ = self.historys.popLast()
                     }
                     self.completionHandler()
                 }
@@ -53,7 +53,7 @@ class MarketHistroyViewModel: BABassClass
             {
             case .success(let historys):
                 
-                self.historys.insert(contentsOf: historys.reversed(), at: 0)
+                self.historys.insert(contentsOf: historys.reversed(), at: 0)// server data is not reversed
 
                 if self.historys.count > maxDisplayHistoryCount
                 {

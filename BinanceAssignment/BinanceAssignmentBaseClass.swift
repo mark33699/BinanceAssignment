@@ -55,5 +55,7 @@ class BATableView: UITableView
         backgroundColor = .generalBackground
         separatorStyle = .none
         rowHeight = 25
+        sectionHeaderHeight = 40
+        isScrollEnabled = false
     }
 }
